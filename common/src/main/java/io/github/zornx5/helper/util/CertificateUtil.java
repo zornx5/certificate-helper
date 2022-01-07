@@ -17,7 +17,7 @@ import java.util.Map;
 public class CertificateUtil {
 
     /**
-     * 构建 {@link X500Name}<br/>
+     * 构建 {@link X500Name}<br>
      * names 的 key 值必须是 {@link org.bouncycastle.asn1.x500.style.BCStyle#DefaultLookUp} 中存在的值（大小写不敏感）
      *
      * @param names 名称 map

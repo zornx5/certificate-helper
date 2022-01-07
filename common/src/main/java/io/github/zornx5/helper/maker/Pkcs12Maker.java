@@ -45,6 +45,9 @@ public class Pkcs12Maker {
      * @param cert       X509证书
      * @param password   口令
      * @return the PKCS12 keystore
+     * @throws NoSuchProviderException  没有提供者异常
+     * @throws KeyStoreException        密钥商店异常
+     * @throws CertificateException     证书异常
      * @throws NoSuchAlgorithmException 算法不支持异常
      * @throws IOException              读写异常
      */

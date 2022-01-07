@@ -16,8 +16,8 @@ import java.security.PublicKey;
 public interface IKeyHelper {
 
     /**
-     * 生成密钥对 <br/>
-     * 私钥 PKCS#8 格式 <br/>
+     * 生成密钥对 <br>
+     * 私钥 PKCS#8 格式 <br>
      * 公钥 X.509 格式
      *
      * @return 密钥对
@@ -26,8 +26,8 @@ public interface IKeyHelper {
     KeyPair generateKeyPair() throws KeyHelperException;
 
     /**
-     * 生成密钥对 <br/>
-     * 私钥 PKCS#8 格式 <br/>
+     * 生成密钥对 <br>
+     * 私钥 PKCS#8 格式 <br>
      * 公钥 X.509 格式
      *
      * @param keySize 这是一个特定于算法的度量，例如模数长度，以位数指定。

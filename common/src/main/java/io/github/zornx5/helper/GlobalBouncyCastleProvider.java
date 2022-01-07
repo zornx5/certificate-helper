@@ -33,7 +33,7 @@ public enum GlobalBouncyCastleProvider {
     }
 
     /**
-     * 设置是否使用 Bouncy Castle 库 <br/>
+     * 设置是否使用 Bouncy Castle 库 <br>
      * 如果设置为 false，表示强制关闭 Bouncy Castle 而使用 JDK
      *
      * @param isUseBouncyCastle 是否使用 BouncyCastle 库

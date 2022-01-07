@@ -1,5 +1,5 @@
 <p align="center">
-	<strong>一个简单的证书帮助工具</strong>
+	<strong>A simple certificate helper</strong>
 </p>
 
 <p align="center">
@@ -13,32 +13,28 @@
 		<img src="https://app.codacy.com/project/badge/Grade/88a8612afc1440c992d0c8a0f0666a07" alt="code quality"/>
 	</a>
 	<a href="https://codecov.io/gh/zornx5/certificate-helper">
-		<img src="https://codecov.io/gh/zornx5/certificate-helper/branch/v5-master/graph/badge.svg?token=D1ERZRC4Z2" alt="code cover"/>
+		<img src="https://codecov.io/gh/zornx5/certificate-helper/branch/v5-master/graph/badge.svg" alt="code cover"/>
 	</a>
 	<a target="_blank" href='https://github.com/zornx5/certificate-helper'>
 		<img src="https://img.shields.io/github/stars/zornx5/certificate-helper.svg?style=social" alt="github star"/>
 	</a>
 </p>
 
+-------------------------------------------------------------------------------
 
-
-
+[**中文说明**](README.md)
 
 -------------------------------------------------------------------------------
 
-[**English Documentation**](README-EN.md)
+## Introduction
 
--------------------------------------------------------------------------------
+A simple certificate helper
 
-## 简介
-
-一个简单的证书帮助工具
-
-## 安装
+## Install
 
 ### Maven
 
-在项目的 `pom.xml` 的 `dependencies` 中加入以下内容:
+Add the following content to the `dependencies` of the `pom.xml` of the project:
 
 ```xml
 
@@ -55,12 +51,13 @@
 implementation 'io.github.zornx5:certificate-helper:0.0.1'
 ```
 
-### 编译安装
+### Compile and install
 
-访问主页：[https://github.com/zornx5/certificate-helper](https://github.com/zornx5/certificate-helper) 下载整个项目源码，然后执行:
+Visit homepage：[https://github.com/zornx5/certificate-helper](https://github.com/zornx5/certificate-helper) Download the
+source code of the entire project, and then execute:
 
 ```sh
 ./install.sh
 ```
 
-然后就可以使用 `Maven` 引入了。
+then you can use `Maven` to import.
