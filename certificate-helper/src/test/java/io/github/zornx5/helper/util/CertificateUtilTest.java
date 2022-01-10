@@ -23,13 +23,11 @@
  *
  */
 
-package io.github.zornx5.helper.certificate.impl;
+package io.github.zornx5.helper.util;
 
-import io.github.zornx5.helper.certificate.ICertificateHelper;
 import io.github.zornx5.helper.key.impl.EcKeyHelper;
 import io.github.zornx5.helper.key.impl.RsaKeyHelper;
 import io.github.zornx5.helper.key.impl.Sm2KeyHelper;
-import io.github.zornx5.helper.util.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
@@ -48,9 +46,8 @@ import java.util.Date;
 import java.util.Locale;
 
 @Slf4j
-public class CertificateHelperTest {
+public class CertificateUtilTest {
 
-    private static final ICertificateHelper helper = new CertificateHelper();
     private static PrivateKey sm2PrivateKey;
     private static PrivateKey rsaPrivateKey;
     private static PrivateKey ecPrivateKey;
@@ -114,17 +111,17 @@ public class CertificateHelperTest {
         PKCS10CertificationRequest rsaSelfSignedCsr = getCsr(issuer, rsaPrivateKey);
 
         // 正例
-        Assert.assertTrue(helper.checkCertificationRequest(sm2SelfSignedCsr, sm2PrivateKey));
-        Assert.assertTrue(helper.checkCertificationRequest(ecSelfSignedCsr, ecPrivateKey));
-        Assert.assertTrue(helper.checkCertificationRequest(rsaSelfSignedCsr, rsaPrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, sm2PrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, ecPrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, rsaPrivateKey));
 
         // 反例
-        Assert.assertFalse(helper.checkCertificationRequest(sm2SelfSignedCsr, ecPrivateKey));
-        Assert.assertFalse(helper.checkCertificationRequest(sm2SelfSignedCsr, rsaPrivateKey));
-        Assert.assertFalse(helper.checkCertificationRequest(ecSelfSignedCsr, sm2PrivateKey));
-        Assert.assertFalse(helper.checkCertificationRequest(ecSelfSignedCsr, rsaPrivateKey));
-        Assert.assertFalse(helper.checkCertificationRequest(rsaSelfSignedCsr, sm2PrivateKey));
-        Assert.assertFalse(helper.checkCertificationRequest(rsaSelfSignedCsr, ecPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, ecPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, rsaPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, sm2PrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, rsaPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, sm2PrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, ecPrivateKey));
     }
 
     @Test
@@ -140,17 +137,17 @@ public class CertificateHelperTest {
         Certificate rsaSelfSignedCertificate = getSelfSignedCertificate(rsaSelfSignedCsr, rsaPrivateKey);
 
         // 正例
-        Assert.assertTrue(helper.checkCertificate(sm2SelfSignedCertificate, sm2PrivateKey));
-        Assert.assertTrue(helper.checkCertificate(ecSelfSignedCertificate, ecPrivateKey));
-        Assert.assertTrue(helper.checkCertificate(rsaSelfSignedCertificate, rsaPrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, sm2PrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificate(ecSelfSignedCertificate, ecPrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, rsaPrivateKey));
 
         // 反例
-        Assert.assertFalse(helper.checkCertificate(sm2SelfSignedCertificate, ecPrivateKey));
-        Assert.assertFalse(helper.checkCertificate(sm2SelfSignedCertificate, rsaPrivateKey));
-        Assert.assertFalse(helper.checkCertificate(ecSelfSignedCertificate, sm2PrivateKey));
-        Assert.assertFalse(helper.checkCertificate(ecSelfSignedCertificate, rsaPrivateKey));
-        Assert.assertFalse(helper.checkCertificate(rsaSelfSignedCertificate, sm2PrivateKey));
-        Assert.assertFalse(helper.checkCertificate(rsaSelfSignedCertificate, ecPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, ecPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, rsaPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(ecSelfSignedCertificate, sm2PrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(ecSelfSignedCertificate, rsaPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, sm2PrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, ecPrivateKey));
     }
 
     @Test
@@ -174,29 +171,29 @@ public class CertificateHelperTest {
         Certificate rsaCertificate = getCertificate(rsaSelfSignedCertificate, rsaCsr, rsaPrivateKey);
 
         try {
-            log.info(KeyUtil.convertToPem("CERTIFICATE", rsaCertificate.getEncoded()));
+            log.info(KeyUtil.write2Pem("CERTIFICATE", rsaCertificate.getEncoded()));
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // 正例
-        Assert.assertTrue(helper.checkCertificate(sm2Certificate, sm2Csr, sm2PrivateKey));
-        Assert.assertTrue(helper.checkCertificate(ecCertificate, ecCsr, ecPrivateKey));
-        Assert.assertTrue(helper.checkCertificate(rsaCertificate, rsaCsr, rsaPrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, sm2PrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificate(ecCertificate, ecCsr, ecPrivateKey));
+        Assert.assertTrue(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, rsaPrivateKey));
 
         // 反例
-        Assert.assertFalse(helper.checkCertificate(sm2Certificate, sm2Csr, ecPrivateKey));
-        Assert.assertFalse(helper.checkCertificate(sm2Certificate, sm2Csr, rsaPrivateKey));
-        Assert.assertFalse(helper.checkCertificate(ecCertificate, ecCsr, sm2PrivateKey));
-        Assert.assertFalse(helper.checkCertificate(ecCertificate, ecCsr, rsaPrivateKey));
-        Assert.assertFalse(helper.checkCertificate(rsaCertificate, rsaCsr, sm2PrivateKey));
-        Assert.assertFalse(helper.checkCertificate(rsaCertificate, rsaCsr, ecPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, ecPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, rsaPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(ecCertificate, ecCsr, sm2PrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(ecCertificate, ecCsr, rsaPrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, sm2PrivateKey));
+        Assert.assertFalse(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, ecPrivateKey));
     }
 
     private PKCS10CertificationRequest getCsr(X500Name issuer, PrivateKey privateKey) {
         PKCS10CertificationRequest sm2SelfSignedCsr = null;
         try {
-            sm2SelfSignedCsr = helper.generateCertificationRequest(issuer, privateKey);
+            sm2SelfSignedCsr = CertificateUtil.generateCertificationRequest(issuer, privateKey);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -207,7 +204,7 @@ public class CertificateHelperTest {
     private Certificate getSelfSignedCertificate(PKCS10CertificationRequest selfSignedCsr, PrivateKey privateKey) {
         Certificate selfSignedCertificate = null;
         try {
-            selfSignedCertificate = helper.generateSelfSignedCertificate(selfSignedCsr, privateKey, new Time(new Date(), Locale.CHINA), new Time(new Date(), Locale.CHINA));
+            selfSignedCertificate = CertificateUtil.generateSelfSignedCertificate(selfSignedCsr, privateKey, new Time(new Date(), Locale.CHINA), new Time(new Date(), Locale.CHINA));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -218,7 +215,7 @@ public class CertificateHelperTest {
     private Certificate getCertificate(Certificate issuerCertificate, PKCS10CertificationRequest csr, PrivateKey privateKey) {
         Certificate certificate = null;
         try {
-            certificate = helper.generateCertificate(csr, issuerCertificate, privateKey, new Time(new Date(), Locale.CHINA), new Time(new Date(), Locale.CHINA));
+            certificate = CertificateUtil.generateCertificate(csr, issuerCertificate, privateKey, new Time(new Date(), Locale.CHINA), new Time(new Date(), Locale.CHINA));
         } catch (Exception e) {
             e.printStackTrace();
         }

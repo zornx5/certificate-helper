@@ -31,11 +31,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemReader;
 import org.bouncycastle.util.io.pem.PemWriter;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
@@ -214,7 +216,7 @@ public class KeyUtil {
             throw new UtilException("私钥不能为空");
         }
         byte[] data = privateKey.getEncoded();
-        String pemPrivateKey = convertToPem("PRIVATE KEY", data);
+        String pemPrivateKey = write2Pem("PRIVATE KEY", data);
         log.info("私钥转换成 PKCS#8 格式的 PEM 字串成功");
         return pemPrivateKey;
     }
@@ -226,12 +228,12 @@ public class KeyUtil {
             throw new UtilException("公钥不能为空");
         }
         byte[] data = publicKey.getEncoded();
-        String pemPublicKey = convertToPem("PRIVATE KEY", data);
+        String pemPublicKey = write2Pem("PRIVATE KEY", data);
         log.info("公钥转换成 PKCS#8 格式的 PEM 字串成功");
         return pemPublicKey;
     }
 
-    public static String convertToPem(String type, byte[] data) {
+    public static String write2Pem(String type, byte[] data) {
         assert data != null;
         PemObject pemObject = new PemObject(type, data);
         StringWriter stringWriter = new StringWriter();
@@ -249,5 +251,27 @@ public class KeyUtil {
             }
         }
         return stringWriter.toString();
+    }
+
+    public static byte[] read2Pem(String pem) {
+        PemReader pemReader = null;
+        PemObject pemObject;
+        try {
+            StringReader reader = new StringReader(pem);
+            pemReader = new PemReader(reader);
+            pemObject = pemReader.readPemObject();
+        } catch (IOException e) {
+            log.error("获取 PEM 失败", e);
+            throw new UtilException("获取 PEM 失败", e);
+        } finally {
+            if (pemReader != null) {
+                try {
+                    pemReader.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
+        }
+        return pemObject.getContent();
     }
 }

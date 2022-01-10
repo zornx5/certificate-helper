@@ -362,7 +362,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
             log.error("转换成 PKCS1 格式失败", e);
             throw new KeyHelperException("转换成 PKCS1 格式失败", e);
         }
-        String pemPrivateKey = KeyUtil.convertToPem(algorithm.toUpperCase() + " PRIVATE KEY", data);
+        String pemPrivateKey = KeyUtil.write2Pem(algorithm.toUpperCase() + " PRIVATE KEY", data);
         log.info("私钥转换成 PKCS#1 格式的 PEM 字串成功");
         return pemPrivateKey;
     }
