@@ -50,11 +50,12 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
+import static io.github.zornx5.helper.KeyContent.base64EcPrivateKey;
+import static io.github.zornx5.helper.KeyContent.base64EcPublicKey;
+
 @Slf4j
 public class ECKeyHelperTest {
 
-    public final static String base64EcPrivateKey = "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgP7IrMHQXdi1F3ja5snyy8DyuK8NGLdKJzaFj9o4GCXigCgYIKoZIzj0DAQehRANCAARlf8VnVpDSXLxgqUtPe8dnCGet999ivh2cgUpDJUAafcPdMTmAN/wInLVnbBaPyRHRK2ioH7KVghPKMz+fenVW";
-    public final static String base64EcPublicKey = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZX/FZ1aQ0ly8YKlLT3vHZwhnrfffYr4dnIFKQyVAGn3D3TE5gDf8CJy1Z2wWj8kR0StoqB+ylYITyjM/n3p1Vg==";
     private static PrivateKey rsaPrivateKey;
     private static PublicKey rsaPublicKey;
 
@@ -156,12 +157,12 @@ public class ECKeyHelperTest {
         PublicKey publicKey = keyPair.getPublic();
         PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKey2PrivateKeyInfo(privateKey);
         Assert.assertNotNull(privateKeyInfo);
-        SubjectPublicKeyInfo subjectPublicKeyInfo = KeyUtil.convertPublicKey2SubjectPublicKeyInfo(publicKey);
+        SubjectPublicKeyInfo subjectPublicKeyInfo = KeyUtil.convertToSubjectPublicKeyInfo(publicKey);
         Assert.assertNotNull(subjectPublicKeyInfo);
 
         PrivateKey convertPrivateKey = null;
         try {
-            convertPrivateKey = helper.convertPrivateKeyInfo2PrivateKey(privateKeyInfo);
+            convertPrivateKey = helper.convertToPrivateKey(privateKeyInfo);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
@@ -169,7 +170,7 @@ public class ECKeyHelperTest {
         Assert.assertNotNull(convertPrivateKey);
         PublicKey convertPublicKey = null;
         try {
-            convertPublicKey = helper.convertSubjectPublicKeyInfo2PublicKey(subjectPublicKeyInfo);
+            convertPublicKey = helper.convertToPublicKey(subjectPublicKeyInfo);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
@@ -194,7 +195,7 @@ public class ECKeyHelperTest {
         PublicKey publicKey = keyPair.getPublic();
         PublicKey publicKeyConvert = null;
         try {
-            publicKeyConvert = helper.convertPrivateKey2PublicKey(keyPair.getPrivate());
+            publicKeyConvert = helper.convertToPublicKey(keyPair.getPrivate());
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
@@ -205,7 +206,7 @@ public class ECKeyHelperTest {
 
     @Test(expected = KeyHelperException.class)
     public void convertPrivateKey2PublicKeyError() {
-        helper.convertPrivateKey2PublicKey(rsaPrivateKey);
+        helper.convertToPublicKey(rsaPrivateKey);
     }
 
     @Test
@@ -213,7 +214,7 @@ public class ECKeyHelperTest {
         PrivateKey privateKey = null;
         String base64String = null;
         try {
-            privateKey = helper.convertString2PrivateKey(base64EcPrivateKey);
+            privateKey = helper.convertToPrivateKey(base64EcPrivateKey);
             base64String = KeyUtil.convertPrivateKey2Base64String(privateKey);
         } catch (Exception e) {
             e.printStackTrace();
@@ -228,7 +229,7 @@ public class ECKeyHelperTest {
         PublicKey publicKey = null;
         String base64String = null;
         try {
-            publicKey = helper.convertBase64String2PublicKey(base64EcPublicKey);
+            publicKey = helper.convertToPublicKey(base64EcPublicKey);
             base64String = KeyUtil.convertPublicKey2Base64String(publicKey);
         } catch (Exception e) {
             e.printStackTrace();
@@ -266,7 +267,7 @@ public class ECKeyHelperTest {
 
         PrivateKey convertPrivateKey = null;
         try {
-            convertPrivateKey = helper.convertPkcs1ToPkcs8(pkcs1Private);
+            convertPrivateKey = helper.convertPrivateKeyPkcs1ToPkcs8(pkcs1Private);
         } catch (Exception e) {
             e.printStackTrace();
         }

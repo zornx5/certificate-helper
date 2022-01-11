@@ -61,7 +61,7 @@ import java.security.spec.EllipticCurve;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 
-import static io.github.zornx5.helper.constant.IHelperConstant.SM2_ALGORITHM;
+import static io.github.zornx5.helper.constant.IHelperConstant.EC_ALGORITHM;
 import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_CIPHER_ALGORITHM;
 import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_KEY_SIZE;
 import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_SIGN_ALGORITHM;
@@ -78,7 +78,7 @@ public class Sm2KeyHelper extends EcKeyHelper {
     private final static byte[] USER_ID = "1234567812345678".getBytes(StandardCharsets.UTF_8);
 
     public Sm2KeyHelper() {
-        super(SM2_ALGORITHM, SM2_DEFAULT_SIGN_ALGORITHM, SM2_DEFAULT_CIPHER_ALGORITHM, SM2_DEFAULT_KEY_SIZE, SM2_EC_CURVE);
+        super(EC_ALGORITHM, SM2_DEFAULT_SIGN_ALGORITHM, SM2_DEFAULT_CIPHER_ALGORITHM, SM2_DEFAULT_KEY_SIZE, SM2_EC_CURVE);
     }
 
     @Override
@@ -117,7 +117,7 @@ public class Sm2KeyHelper extends EcKeyHelper {
     }
 
     @Override
-    public PrivateKey convertPkcs1ToPkcs8(byte[] sec1PrivateKey) throws KeyHelperException {
+    public PrivateKey convertPrivateKeyPkcs1ToPkcs8(byte[] sec1PrivateKey) throws KeyHelperException {
         log.info("转换「{}」旧 SEC.1 （Openssl）私钥成 PKCS#8 （Java）格式", algorithm);
         SM2P256V1Curve sm2P256V1Curve = new SM2P256V1Curve();
         BigInteger q = sm2P256V1Curve.getQ();

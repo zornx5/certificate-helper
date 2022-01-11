@@ -123,23 +123,14 @@ public interface IKeyHelper {
     boolean checkKeyPair(byte[] privateKey, byte[] publicKey) throws CertificateHelperException;
 
     /**
-     * base64 编码的私钥字串转换成 {@link java.security.PrivateKey} 对象
+     * base64 编码的私钥字串转换成 {@link PrivateKey} 对象
      *
      * @param base64OrPemPrivateKey base64 编码的私钥字符串或 PEM 私钥字符串
      * @return PublicKey
      * @throws CertificateHelperException 证书帮助异常
-     * @see java.security.PrivateKey
+     * @see PrivateKey
      */
-    PrivateKey convertString2PrivateKey(String base64OrPemPrivateKey) throws CertificateHelperException;
-
-    /**
-     * 私钥 {@link PrivateKey} 转换成私钥信息 {@link PrivateKeyInfo}
-     *
-     * @param privateKey 私钥
-     * @return 私钥
-     * @throws CertificateHelperException 证书帮助异常
-     */
-    PrivateKeyInfo convertPrivateKey2PrivateKeyInfo(PrivateKey privateKey) throws CertificateHelperException;
+    PrivateKey convertToPrivateKey(String base64OrPemPrivateKey) throws CertificateHelperException;
 
     /**
      * 私钥信息 {@link PrivateKeyInfo} 转换成私钥 {@link PrivateKey}
@@ -148,62 +139,17 @@ public interface IKeyHelper {
      * @return 私钥
      * @throws CertificateHelperException 证书帮助异常
      */
-    PrivateKey convertPrivateKeyInfo2PrivateKey(PrivateKeyInfo privateKeyInfo) throws CertificateHelperException;
+    PrivateKey convertToPrivateKey(PrivateKeyInfo privateKeyInfo) throws CertificateHelperException;
 
     /**
-     * 私钥数据转换成 {@link java.security.PrivateKey} 对象
+     * 私钥数据转换成 {@link PrivateKey} 对象
      *
      * @param privateKey 私钥数据
      * @return PublicKey
      * @throws CertificateHelperException 证书帮助异常
-     * @see java.security.PrivateKey
+     * @see PrivateKey
      */
-    PrivateKey convertData2PrivateKey(byte[] privateKey) throws CertificateHelperException;
-
-    /**
-     * base64 编码的公钥字串转换成 {@link java.security.PublicKey} 对象
-     *
-     * @param base64OrPemPublicKey base64 编码的公钥字符串或 PEM 公钥字符串
-     * @return PublicKey
-     * @throws CertificateHelperException 证书帮助异常
-     */
-    PublicKey convertBase64String2PublicKey(String base64OrPemPublicKey) throws CertificateHelperException;
-
-    /**
-     * {@link SubjectPublicKeyInfo} 转换成 {@link PublicKey}
-     *
-     * @param subjectPublicKeyInfo 公钥信息
-     * @return 公钥
-     * @throws CertificateHelperException 证书帮助异常
-     */
-    PublicKey convertSubjectPublicKeyInfo2PublicKey(SubjectPublicKeyInfo subjectPublicKeyInfo) throws CertificateHelperException;
-
-    /**
-     * 公钥数据转换成 {@link java.security.PublicKey} 对象
-     *
-     * @param publicKey 公钥数据
-     * @return PublicKey
-     * @throws CertificateHelperException 证书帮助异常
-     */
-    PublicKey convertData2PublicKey(byte[] publicKey) throws CertificateHelperException;
-
-    /**
-     * 从 {@link PrivateKey} 中解析 {@link PublicKey}
-     *
-     * @param privateKey 私钥
-     * @return 公钥
-     * @throws CertificateHelperException 证书帮助异常
-     */
-    PublicKey convertPrivateKey2PublicKey(PrivateKey privateKey) throws CertificateHelperException;
-
-    /**
-     * 从 {@link PrivateKey} 数据中解析 {@link PublicKey}
-     *
-     * @param privateKey 私钥数据
-     * @return 公钥
-     * @throws CertificateHelperException 证书帮助异常
-     */
-    PublicKey convertPrivateKey2PublicKey(byte[] privateKey) throws CertificateHelperException;
+    PrivateKey convertToPrivateKey(byte[] privateKey) throws CertificateHelperException;
 
     /**
      * 转换旧 PKCS#1 （Openssl）私钥成 PKCS#8 （Java）格式
@@ -212,7 +158,97 @@ public interface IKeyHelper {
      * @return PKCS#8 编码私钥
      * @throws CertificateHelperException 证书帮助异常
      */
-    PrivateKey convertPkcs1ToPkcs8(byte[] pkcs1PrivateKey) throws CertificateHelperException;
+    PrivateKey convertPrivateKeyPkcs1ToPkcs8(byte[] pkcs1PrivateKey) throws CertificateHelperException;
+
+    /**
+     * 私钥 {@link PrivateKey} 转换成私钥信息 {@link PrivateKeyInfo}
+     *
+     * @param privateKey 私钥
+     * @return 私钥
+     * @throws CertificateHelperException 证书帮助异常
+     */
+    PrivateKeyInfo convertToPrivateKeyInfo(PrivateKey privateKey) throws CertificateHelperException;
+
+    /**
+     * base64 编码的公钥字串转换成 {@link PublicKey} 对象
+     *
+     * @param base64OrPemPublicKey base64 编码的公钥字符串或 PEM 公钥字符串
+     * @return PublicKey
+     * @throws CertificateHelperException 证书帮助异常
+     */
+    PublicKey convertToPublicKey(String base64OrPemPublicKey) throws CertificateHelperException;
+
+    /**
+     * {@link SubjectPublicKeyInfo} 转换成 {@link PublicKey}
+     *
+     * @param subjectPublicKeyInfo 公钥信息
+     * @return 公钥
+     * @throws CertificateHelperException 证书帮助异常
+     */
+    PublicKey convertToPublicKey(SubjectPublicKeyInfo subjectPublicKeyInfo) throws CertificateHelperException;
+
+    /**
+     * 公钥数据转换成 {@link PublicKey} 对象
+     *
+     * @param publicKey 公钥数据
+     * @return PublicKey
+     * @throws CertificateHelperException 证书帮助异常
+     */
+    PublicKey convertToPublicKey(byte[] publicKey) throws CertificateHelperException;
+
+    /**
+     * 从 {@link PrivateKey} 中解析 {@link PublicKey}
+     *
+     * @param privateKey 私钥
+     * @return 公钥
+     * @throws CertificateHelperException 证书帮助异常
+     */
+    PublicKey convertToPublicKey(PrivateKey privateKey) throws CertificateHelperException;
+
+    /**
+     * 从 {@link PrivateKey} 数据中解析 {@link PublicKey}
+     *
+     * @param privateKey 私钥数据
+     * @return 公钥
+     * @throws CertificateHelperException 证书帮助异常
+     */
+    PublicKey convertPrivateKeyToPublicKey(byte[] privateKey) throws CertificateHelperException;
+
+    /**
+     * 公钥数据转换成 {@link SubjectPublicKeyInfo} 对象
+     *
+     * @param publicKey 公钥
+     * @return 公钥
+     * @throws CertificateHelperException 证书帮助异常
+     */
+    SubjectPublicKeyInfo convertToSubjectPublicKeyInfo(PublicKey publicKey) throws CertificateHelperException;
+
+    /**
+     * 私钥转换成 Base64 编码的字串
+     *
+     * @param privateKey 私钥
+     * @return Base64 编码的字串
+     * @throws KeyHelperException 密钥帮助异常
+     */
+    String convertToString(PrivateKey privateKey) throws KeyHelperException;
+
+    /**
+     * 私钥转换成 PEM 字串
+     *
+     * @param privateKey 私钥
+     * @return PEM 字串
+     * @throws KeyHelperException 密钥帮助异常
+     */
+    String convertToPem(PrivateKey privateKey) throws KeyHelperException;
+
+    /**
+     * 私钥转换成 PKCS1 Base64 编码的字串
+     *
+     * @param privateKey 私钥
+     * @return Base64 编码的字串
+     * @throws KeyHelperException 密钥帮助异常
+     */
+    String convertToPkcs1String(PrivateKey privateKey) throws KeyHelperException;
 
     /**
      * 私钥转换成 PEM 字串
@@ -224,13 +260,22 @@ public interface IKeyHelper {
     String convertToPkcs1Pem(PrivateKey privateKey) throws KeyHelperException;
 
     /**
-     * 私钥转换成 PKCS1 Base64 字串
+     * 私钥转换成 PEM 字串
      *
-     * @param privateKey 私钥
+     * @param publicKey 公钥
      * @return PEM 字串
      * @throws KeyHelperException 密钥帮助异常
      */
-    String convertToBase64Pkcs1String(PrivateKey privateKey) throws KeyHelperException;
+    String convertToString(PublicKey publicKey) throws KeyHelperException;
+
+    /**
+     * 私钥转换成 PEM 字串
+     *
+     * @param publicKey 公钥
+     * @return PEM 字串
+     * @throws KeyHelperException 密钥帮助异常
+     */
+    String convertToPem(PublicKey publicKey) throws KeyHelperException;
 
     /**
      * 计算指定内容的签名

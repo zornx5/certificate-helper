@@ -227,7 +227,7 @@ public class CertificateUtil {
         PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKey2PrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
         IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
-        PublicKey publicKey = helper.convertPrivateKey2PublicKey(issuerPrivateKey);
+        PublicKey publicKey = helper.convertToPublicKey(issuerPrivateKey);
 
         SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
         CertificationRequestInfo info = new CertificationRequestInfo(subject, subjectPublicKeyInfo, new DERSet());
@@ -255,7 +255,7 @@ public class CertificateUtil {
 
         byte[] signature = csr.getSignature();
         try {
-            PublicKey publicKey = helper.convertSubjectPublicKeyInfo2PublicKey(csr.getSubjectPublicKeyInfo());
+            PublicKey publicKey = helper.convertToPublicKey(csr.getSubjectPublicKeyInfo());
             byte[] contentData = csr.toASN1Structure().getCertificationRequestInfo().getEncoded(ASN1Encoding.DER);
             return helper.verify(contentData, publicKey, signature);
         } catch (Exception e) {
@@ -379,7 +379,7 @@ public class CertificateUtil {
 
         byte[] signature = certificate.getSignature().getBytes();
         try {
-            PublicKey publicKey = helper.convertSubjectPublicKeyInfo2PublicKey(certificate.getSubjectPublicKeyInfo());
+            PublicKey publicKey = helper.convertToPublicKey(certificate.getSubjectPublicKeyInfo());
             byte[] contentData = certificate.getTBSCertificate().getEncoded();
             return helper.verify(contentData, publicKey, signature);
         } catch (Exception e) {
@@ -577,7 +577,7 @@ public class CertificateUtil {
                 PKCS12SafeBag[] bags = dataFact.getSafeBags();
                 PKCS8EncryptedPrivateKeyInfo encInfo = (PKCS8EncryptedPrivateKeyInfo) bags[0].getBagValue();
                 PrivateKeyInfo info = encInfo.decryptPrivateKeyInfo(inputDecryptorProvider);
-                return KeyHelperManager.getByName("Sm2").convertPrivateKeyInfo2PrivateKey(info);
+                return KeyHelperManager.getByName("Sm2").convertToPrivateKey(info);
             }
         }
 

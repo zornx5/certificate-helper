@@ -62,7 +62,7 @@ public class PfxMakerTest {
 
             PfxMaker pfxMaker = new PfxMaker();
             PKCS10CertificationRequest request = new PKCS10CertificationRequest(csr);
-            PublicKey publicKey = helper.convertSubjectPublicKeyInfo2PublicKey(request.getSubjectPublicKeyInfo());
+            PublicKey publicKey = helper.convertToPublicKey(request.getSubjectPublicKeyInfo());
             PKCS12PfxPdu pfx = pfxMaker.makePfx(keyPair.getPrivate(), publicKey, cert, TEST_PFX_PASSWD);
             byte[] pkcs12 = pfx.getEncoded(ASN1Encoding.DER);
 

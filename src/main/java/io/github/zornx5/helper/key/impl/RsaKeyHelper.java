@@ -136,7 +136,7 @@ public class RsaKeyHelper extends AbstractKeyHelper {
     }
 
     @Override
-    public PrivateKey convertPkcs1ToPkcs8(byte[] pkcs1PrivateKey) throws KeyHelperException {
+    public PrivateKey convertPrivateKeyPkcs1ToPkcs8(byte[] pkcs1PrivateKey) throws KeyHelperException {
         log.info("转换「{}」旧 PKCS#1 （Openssl）私钥成 PKCS#8 （Java）格式", algorithm);
         RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pkcs1PrivateKey);
         RSAPrivateKeySpec rsaPrivateKeySpec = new RSAPrivateKeySpec(rsaPrivateKey.getModulus(), rsaPrivateKey.getPrivateExponent());

@@ -52,12 +52,13 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
+import static io.github.zornx5.helper.KeyContent.base64Sm2PrivateKey;
+import static io.github.zornx5.helper.KeyContent.base64Sm2PublicKey;
+
 @Slf4j
 @RunWith(PowerMockRunner.class)
 public class Sm2KeyHelperTest {
 
-    public final static String base64Sm2PrivateKey = "MIGTAgEAMBMGByqGSM49AgEGCCqBHM9VAYItBHkwdwIBAQQgeZ6MVDl5JJfWmVBHLb4WXTgNdFSrKYbQL24hGA2ZRO6gCgYIKoEcz1UBgi2hRANCAARHpU/FkqCOKeh8Al2wlZBt0swhyAgfH16myQHil3emAuyLBt4vsso/7usIKuk38eyABDFI6/KG+68JH9HBuq/Y";
-    public final static String base64Sm2PublicKey = "MFkwEwYHKoZIzj0CAQYIKoEcz1UBgi0DQgAER6VPxZKgjinofAJdsJWQbdLMIcgIHx9epskB4pd3pgLsiwbeL7LKP+7rCCrpN/HsgAQxSOvyhvuvCR/Rwbqv2A==";
     private static PrivateKey rsaPrivateKey;
     private static PublicKey rsaPublicKey;
     private final Sm2KeyHelper helper = new Sm2KeyHelper();
@@ -158,12 +159,12 @@ public class Sm2KeyHelperTest {
         PublicKey publicKey = keyPair.getPublic();
         PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKey2PrivateKeyInfo(privateKey);
         Assert.assertNotNull(privateKeyInfo);
-        SubjectPublicKeyInfo subjectPublicKeyInfo = KeyUtil.convertPublicKey2SubjectPublicKeyInfo(publicKey);
+        SubjectPublicKeyInfo subjectPublicKeyInfo = KeyUtil.convertToSubjectPublicKeyInfo(publicKey);
         Assert.assertNotNull(subjectPublicKeyInfo);
 
         PrivateKey convertPrivateKey = null;
         try {
-            convertPrivateKey = helper.convertPrivateKeyInfo2PrivateKey(privateKeyInfo);
+            convertPrivateKey = helper.convertToPrivateKey(privateKeyInfo);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
@@ -171,7 +172,7 @@ public class Sm2KeyHelperTest {
         Assert.assertNotNull(convertPrivateKey);
         PublicKey convertPublicKey = null;
         try {
-            convertPublicKey = helper.convertSubjectPublicKeyInfo2PublicKey(subjectPublicKeyInfo);
+            convertPublicKey = helper.convertToPublicKey(subjectPublicKeyInfo);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
@@ -196,7 +197,7 @@ public class Sm2KeyHelperTest {
         PublicKey publicKey = keyPair.getPublic();
         PublicKey publicKeyConvert = null;
         try {
-            publicKeyConvert = helper.convertPrivateKey2PublicKey(keyPair.getPrivate());
+            publicKeyConvert = helper.convertToPublicKey(keyPair.getPrivate());
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
@@ -206,7 +207,7 @@ public class Sm2KeyHelperTest {
 
         PublicKey rsaPublicKey = null;
         try {
-            rsaPublicKey = helper.convertPrivateKey2PublicKey(rsaPrivateKey);
+            rsaPublicKey = helper.convertToPublicKey(rsaPrivateKey);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -218,7 +219,7 @@ public class Sm2KeyHelperTest {
         PrivateKey privateKey = null;
         String base64String = null;
         try {
-            privateKey = helper.convertString2PrivateKey(base64Sm2PrivateKey);
+            privateKey = helper.convertToPrivateKey(base64Sm2PrivateKey);
             base64String = KeyUtil.convertPrivateKey2Base64String(privateKey);
         } catch (Exception e) {
             e.printStackTrace();
@@ -233,7 +234,7 @@ public class Sm2KeyHelperTest {
         PublicKey publicKey = null;
         String base64String = null;
         try {
-            publicKey = helper.convertBase64String2PublicKey(base64Sm2PublicKey);
+            publicKey = helper.convertToPublicKey(base64Sm2PublicKey);
             base64String = KeyUtil.convertPublicKey2Base64String(publicKey);
         } catch (Exception e) {
             e.printStackTrace();
@@ -271,7 +272,7 @@ public class Sm2KeyHelperTest {
 
         PrivateKey convertPrivateKey = null;
         try {
-            convertPrivateKey = helper.convertPkcs1ToPkcs8(pkcs1Private);
+            convertPrivateKey = helper.convertPrivateKeyPkcs1ToPkcs8(pkcs1Private);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();

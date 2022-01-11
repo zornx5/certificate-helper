@@ -46,11 +46,11 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.ECGenParameterSpec;
 
+import static io.github.zornx5.helper.constant.IHelperConstant.EC_ALGORITHM;
 import static io.github.zornx5.helper.constant.IHelperConstant.EC_DEFAULT_CIPHER_ALGORITHM;
 import static io.github.zornx5.helper.constant.IHelperConstant.EC_DEFAULT_CURVE;
 import static io.github.zornx5.helper.constant.IHelperConstant.EC_DEFAULT_KEY_SIZE;
 import static io.github.zornx5.helper.constant.IHelperConstant.EC_DEFAULT_SIGN_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.SM2_ALGORITHM;
 import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_KEY_SIZE;
 
 /**
@@ -66,7 +66,7 @@ public class EcKeyHelper extends AbstractKeyHelper {
     protected String ecCurve = EC_DEFAULT_CURVE;
 
     public EcKeyHelper() {
-        super(SM2_ALGORITHM, EC_DEFAULT_SIGN_ALGORITHM, EC_DEFAULT_CIPHER_ALGORITHM, EC_DEFAULT_KEY_SIZE);
+        super(EC_ALGORITHM, EC_DEFAULT_SIGN_ALGORITHM, EC_DEFAULT_CIPHER_ALGORITHM, EC_DEFAULT_KEY_SIZE);
     }
 
     public EcKeyHelper(String algorithm, String signAlgorithm, String cipherAlgorithm, int keySize, String ecCurve) {
@@ -127,7 +127,7 @@ public class EcKeyHelper extends AbstractKeyHelper {
     }
 
     @Override
-    public PrivateKey convertPkcs1ToPkcs8(byte[] sec1PrivateKey) throws KeyHelperException {
+    public PrivateKey convertPrivateKeyPkcs1ToPkcs8(byte[] sec1PrivateKey) throws KeyHelperException {
         throw new KeyHelperException("此实现没有提供此方法");
     }
 }

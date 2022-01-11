@@ -33,7 +33,7 @@ package io.github.zornx5.helper.util;
 public class StringUtil {
 
     /**
-     * <p>字符串是否为空白，空白的定义如下：</p>
+     * 字符串是否为空白，空白的定义如下：
      * <ol>
      *     <li>{@code null}</li>
      *     <li>空字符串：{@code ""}</li>
@@ -61,7 +61,21 @@ public class StringUtil {
                 return false;
             }
         }
-
         return true;
+    }
+
+    /**
+     * 字符串是否不为空白，空白的定义如下：
+     * <ol>
+     *     <li>{@code null}</li>
+     *     <li>空字符串：{@code ""}</li>
+     *     <li>空格、全角空格、制表符、换行符，等不可见字符</li>
+     * </ol>
+     *
+     * @param str 被检测的字符串
+     * @return 若为不空白，则返回 true
+     */
+    public static boolean isNotBlank(CharSequence str) {
+        return !isBlank(str);
     }
 }

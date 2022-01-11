@@ -40,8 +40,15 @@ import java.util.Base64;
 @Slf4j
 public class Base64Util {
     public static String encode2String(byte[] data) {
+        return encode2String(data, null);
+    }
+
+    public static String encode2String(byte[] data, String charset) {
+        if (StringUtil.isBlank(charset)) {
+            charset = IHelperConstant.DEFAULT_CHARSET;
+        }
         try {
-            return new String(Base64.getEncoder().encode(data), IHelperConstant.DEFAULT_CHARSET);
+            return new String(Base64.getEncoder().encode(data), charset);
         } catch (UnsupportedEncodingException e) {
             log.error("Base64 编码失败", e);
             throw new UtilException("Base64 编码失败", e);
@@ -49,8 +56,15 @@ public class Base64Util {
     }
 
     public static byte[] decode2byte(String base64String) {
+        return decode2byte(base64String, null);
+    }
+
+    public static byte[] decode2byte(String base64String, String charset) {
+        if (StringUtil.isBlank(charset)) {
+            charset = IHelperConstant.DEFAULT_CHARSET;
+        }
         try {
-            return Base64.getDecoder().decode(base64String.getBytes(IHelperConstant.DEFAULT_CHARSET));
+            return Base64.getDecoder().decode(base64String.getBytes(charset));
         } catch (UnsupportedEncodingException e) {
             log.error("Base64 解码失败", e);
             throw new UtilException("Base64 解码失败", e);

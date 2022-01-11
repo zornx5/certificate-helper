@@ -49,16 +49,13 @@ public class Base64UtilTest {
         Assert.assertNotNull(bytes);
     }
 
-    @Test
+    @Test(expected = UtilException.class)
     public void encodeError() {
-        // TODO 测试覆盖
+        Base64Util.encode2String("abc".getBytes(StandardCharsets.UTF_8),"UnsupportedEncoding");
     }
 
     @Test(expected = UtilException.class)
-    public void decodeError() throws UnsupportedEncodingException {
-        String str = PowerMockito.mock(String.class);
-        PowerMockito.when(str.getBytes(IHelperConstant.DEFAULT_CHARSET))
-                .thenThrow(new UnsupportedEncodingException("Parsing error."));
-        Base64Util.decode2byte(str);
+    public void decodeError() {
+        Base64Util.decode2byte("abc","UnsupportedEncoding");
     }
 }

@@ -25,6 +25,8 @@
 
 package io.github.zornx5.helper.util;
 
+import java.io.Closeable;
+
 /**
  * IO 工具类
  *
@@ -35,5 +37,21 @@ public class IoUtil {
      * 防止实例化
      */
     private IoUtil() {
+    }
+
+    /**
+     * 关闭<br>
+     * 关闭失败不会抛出异常
+     *
+     * @param closeable 被关闭的对象
+     */
+    public static void close(Closeable closeable) {
+        if (null != closeable) {
+            try {
+                closeable.close();
+            } catch (Exception e) {
+                // 静默关闭
+            }
+        }
     }
 }

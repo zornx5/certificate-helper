@@ -149,7 +149,7 @@ public class KeyUtil {
         return privateKeyInfo;
     }
 
-    public static SubjectPublicKeyInfo convertPublicKey2SubjectPublicKeyInfo(PublicKey publicKey) {
+    public static SubjectPublicKeyInfo convertToSubjectPublicKeyInfo(PublicKey publicKey) {
         log.info("公钥转换成公钥信息");
         if (publicKey == null) {
             log.error("公钥不能为空");
