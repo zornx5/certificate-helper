@@ -37,6 +37,7 @@ import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
+import java.util.Objects;
 
 import static io.github.zornx5.helper.constant.IHelperConstant.RSA_ALGORITHM;
 import static io.github.zornx5.helper.constant.IHelperConstant.RSA_DEFAULT_CIPHER_ALGORITHM;
@@ -80,39 +81,31 @@ public class RsaKeyHelper extends AbstractKeyHelper {
     }
 
     public int getKeySize(PrivateKey privateKey) throws KeyHelperException {
-        if (algorithm.equalsIgnoreCase(privateKey.getAlgorithm())) {
-            log.info("获取「{}」私钥密钥大小", algorithm);
-            RSAPrivateKeySpec keySpec;
-            try {
-                keySpec = keyFactory.getKeySpec(privateKey, RSAPrivateKeySpec.class);
-            } catch (InvalidKeySpecException e) {
-                log.error("无效的密钥规范异常", e);
-                throw new KeyHelperException("无效的密钥规范异常", e);
-            }
-            int keySize = keySpec.getModulus().toString(2).length();
-            log.info("获取密钥大小成功，密钥大小为 「{}」", keySize);
-            return keySize;
-        } else {
-            throw new KeyHelperException("本实现不支持此算法：" + privateKey.getAlgorithm() + " 私钥");
+        log.info("获取「{}」私钥密钥大小", algorithm);
+        RSAPrivateKeySpec keySpec;
+        try {
+            keySpec = keyFactory.getKeySpec(privateKey, RSAPrivateKeySpec.class);
+        } catch (InvalidKeySpecException e) {
+            log.error("无效的密钥规范异常, 本实现不支持", e);
+            throw new KeyHelperException("无效的密钥规范异常, 本实现不支持", e);
         }
+        int keySize = keySpec.getModulus().toString(2).length();
+        log.info("获取密钥大小成功，密钥大小为 「{}」", keySize);
+        return keySize;
     }
 
     public int getKeySize(PublicKey publicKey) throws KeyHelperException {
-        if (algorithm.equalsIgnoreCase(publicKey.getAlgorithm())) {
-            log.info("获取「{}」公钥密钥大小", algorithm);
-            RSAPublicKeySpec keySpec;
-            try {
-                keySpec = keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
-            } catch (InvalidKeySpecException e) {
-                log.error("无效的密钥规范异常", e);
-                throw new KeyHelperException("无效的密钥规范异常", e);
-            }
-            int keySize = keySpec.getModulus().toString(2).length();
-            log.info("获取密钥大小成功，密钥大小为 「{}」", keySize);
-            return keySize;
-        } else {
-            throw new KeyHelperException("本实现不支持此算法：" + publicKey.getAlgorithm() + " 公钥");
+        log.info("获取「{}」公钥密钥大小", algorithm);
+        RSAPublicKeySpec keySpec;
+        try {
+            keySpec = keyFactory.getKeySpec(publicKey, RSAPublicKeySpec.class);
+        } catch (InvalidKeySpecException e) {
+            log.error("无效的密钥规范异常, 本实现不支持", e);
+            throw new KeyHelperException("无效的密钥规范异常, 本实现不支持", e);
         }
+        int keySize = keySpec.getModulus().toString(2).length();
+        log.info("获取密钥大小成功，密钥大小为 「{}」", keySize);
+        return keySize;
     }
 
     @Override
@@ -125,8 +118,8 @@ public class RsaKeyHelper extends AbstractKeyHelper {
             try {
                 publicKey = keyFactory.generatePublic(rsaPublicKeySpec);
             } catch (InvalidKeySpecException e) {
-                log.error("无效的密钥规范异常", e);
-                throw new KeyHelperException("无效的密钥规范异常", e);
+                log.error("无效的密钥规范异常, 本实现不支持", e);
+                throw new KeyHelperException("无效的密钥规范异常, 本实现不支持", e);
             }
             log.info("从私钥中提取/生成公钥成功");
             return publicKey;
@@ -137,8 +130,17 @@ public class RsaKeyHelper extends AbstractKeyHelper {
 
     @Override
     public PrivateKey convertPrivateKeyPkcs1ToPkcs8(byte[] pkcs1PrivateKey) throws KeyHelperException {
+        if (Objects.isNull(pkcs1PrivateKey) || pkcs1PrivateKey.length <= 0) {
+            throw new KeyHelperException("PKCS1 私钥数据不能为空");
+        }
         log.info("转换「{}」旧 PKCS#1 （Openssl）私钥成 PKCS#8 （Java）格式", algorithm);
-        RSAPrivateKey rsaPrivateKey = RSAPrivateKey.getInstance(pkcs1PrivateKey);
+        RSAPrivateKey rsaPrivateKey;
+        try {
+            rsaPrivateKey = RSAPrivateKey.getInstance(pkcs1PrivateKey);
+        } catch (ClassCastException e) {
+            log.error("非「{}」私钥", algorithm, e);
+            throw new KeyHelperException("非 " + algorithm + " 私钥", e);
+        }
         RSAPrivateKeySpec rsaPrivateKeySpec = new RSAPrivateKeySpec(rsaPrivateKey.getModulus(), rsaPrivateKey.getPrivateExponent());
         PrivateKey privateKey;
         try {

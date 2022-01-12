@@ -46,6 +46,7 @@ import java.io.Writer;
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.util.Objects;
 
 /**
  * PEM (Privacy Enhanced Mail) 工具类 <br>
@@ -70,6 +71,9 @@ public class PemUtil {
     }
 
     public static byte[] readPemOrBase64Content(String pem) {
+        if (StringUtil.isBlank(pem)) {
+            return new byte[0];
+        }
         pem = pem.trim();
         if (pem.startsWith(PREFIX) && pem.endsWith(PREFIX)) {
             PemReader pemReader = null;
@@ -89,7 +93,13 @@ public class PemUtil {
         }
     }
 
-    public static String writePemString(String type, byte[] data) {
+    public static String writePemString(String type, byte[] data) throws UtilException {
+        if (StringUtil.isBlank(type)) {
+            throw new UtilException("类型不能为空");
+        }
+        if (Objects.isNull(data) || data.length <= 0) {
+            throw new UtilException(type + " 数据不能为空");
+        }
         PemObject pemObject = new PemObject(type, data);
         StringWriter stringWriter = new StringWriter();
         PemWriter pemWriter = new PemWriter(stringWriter);

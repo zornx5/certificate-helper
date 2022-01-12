@@ -25,15 +25,18 @@
 
 package io.github.zornx5.helper.key;
 
+import io.github.zornx5.helper.constant.IHelperConstant;
 import io.github.zornx5.helper.exception.CertificateHelperException;
 import io.github.zornx5.helper.exception.KeyHelperException;
 import io.github.zornx5.helper.exception.UtilException;
 import io.github.zornx5.helper.util.Base64Util;
 import io.github.zornx5.helper.util.KeyUtil;
 import io.github.zornx5.helper.util.PemUtil;
+import io.github.zornx5.helper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.util.Encodable;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -87,22 +90,38 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
 
     @Override
     public boolean checkKeyPair(String base64OrPemPrivateKey, String base64OrPemPublicKey) throws CertificateHelperException {
+        if (StringUtil.isBlank(base64OrPemPrivateKey) || StringUtil.isBlank(base64OrPemPublicKey)) {
+            log.debug("检查密钥对是否匹配: 密钥为空，结果 False");
+            return false;
+        }
         return checkKeyPair(PemUtil.readPemOrBase64Content(base64OrPemPrivateKey), PemUtil.readPemOrBase64Content(base64OrPemPublicKey));
     }
 
     @Override
     public boolean checkKeyPair(PrivateKey privateKey, SubjectPublicKeyInfo subjectPublicKeyInfo) throws CertificateHelperException {
+        if (Objects.isNull(privateKey) || Objects.isNull(subjectPublicKeyInfo)) {
+            log.debug("检查密钥对是否匹配: 密钥为空，结果 False");
+            return false;
+        }
         return checkKeyPair(privateKey, convertToPublicKey(subjectPublicKeyInfo));
 
     }
 
     @Override
     public boolean checkKeyPair(PrivateKeyInfo privateKeyInfo, PublicKey publicKey) throws CertificateHelperException {
+        if (Objects.isNull(privateKeyInfo) || Objects.isNull(publicKey)) {
+            log.debug("检查密钥对是否匹配: 密钥为空，结果 False");
+            return false;
+        }
         return checkKeyPair(convertToPrivateKey(privateKeyInfo), publicKey);
     }
 
     @Override
     public boolean checkKeyPair(PrivateKeyInfo privateKeyInfo, SubjectPublicKeyInfo subjectPublicKeyInfo) throws CertificateHelperException {
+        if (Objects.isNull(privateKeyInfo) || Objects.isNull(subjectPublicKeyInfo)) {
+            log.debug("检查密钥对是否匹配: 密钥为空，结果 False");
+            return false;
+        }
         return checkKeyPair(convertToPrivateKey(privateKeyInfo), convertToPublicKey(subjectPublicKeyInfo));
     }
 
@@ -134,7 +153,12 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
             return false;
         }
         String base64PublicKey = Base64Util.encode2String(publicKey);
-        String base64AnotherPublicKey = KeyUtil.convertPublicKey2Base64String(anotherPublicKey);
+        String base64AnotherPublicKey;
+        try {
+            base64AnotherPublicKey = KeyUtil.convertPublicKey2Base64String(anotherPublicKey);
+        } catch (UtilException e) {
+            throw new KeyHelperException("转换异常", e);
+        }
         log.debug("检查密钥对是否匹配: 公钥 Base64 编码：「{}」", base64AnotherPublicKey);
         log.debug("检查密钥对是否匹配: 从私钥提取/生成的公钥 Base64 编码：「{}」", base64AnotherPublicKey);
         boolean check = base64PublicKey.equals(base64AnotherPublicKey);
@@ -154,12 +178,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
             log.error("私钥信息转换成私钥: 私钥信息不能为空");
             throw new KeyHelperException("私钥信息转换成私钥: 私钥信息不能为空");
         }
-        try {
-            return convertToPrivateKey(privateKeyInfo.getEncoded());
-        } catch (IOException e) {
-            log.error("获取私钥字节码异常", e);
-            throw new KeyHelperException("获取私钥字节码异常", e);
-        }
+        return convertToPrivateKey(getEncoded(privateKeyInfo));
     }
 
     @Override
@@ -181,8 +200,12 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     }
 
     @Override
-    public PrivateKeyInfo convertToPrivateKeyInfo(PrivateKey privateKey) throws UtilException {
-        return KeyUtil.convertPrivateKey2PrivateKeyInfo(privateKey);
+    public PrivateKeyInfo convertToPrivateKeyInfo(PrivateKey privateKey) throws KeyHelperException {
+        try {
+            return KeyUtil.convertPrivateKey2PrivateKeyInfo(privateKey);
+        } catch (UtilException e) {
+            throw new KeyHelperException("转换异常", e);
+        }
     }
 
     @Override
@@ -197,12 +220,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
             log.error("公钥信息不能为空");
             throw new KeyHelperException("公钥信息不能为空");
         }
-        try {
-            return convertToPublicKey(subjectPublicKeyInfo.getEncoded());
-        } catch (IOException e) {
-            log.error("获取公钥字节码异常", e);
-            throw new KeyHelperException("获取公钥字节码异常", e);
-        }
+        return convertToPublicKey(getEncoded(subjectPublicKeyInfo));
     }
 
     @Override
@@ -240,22 +258,38 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
 
     @Override
     public SubjectPublicKeyInfo convertToSubjectPublicKeyInfo(PublicKey publicKey) throws CertificateHelperException {
-        return KeyUtil.convertToSubjectPublicKeyInfo(publicKey);
+        try {
+            return KeyUtil.convertToSubjectPublicKeyInfo(publicKey);
+        } catch (UtilException e) {
+            throw new KeyHelperException("转换异常", e);
+        }
     }
 
     @Override
     public String convertToString(PrivateKey privateKey) throws KeyHelperException {
-        return KeyUtil.convertPrivateKey2Base64String(privateKey);
+        try {
+            return KeyUtil.convertPrivateKey2Base64String(privateKey);
+        } catch (UtilException e) {
+            throw new KeyHelperException("转换异常", e);
+        }
     }
 
     @Override
-    public String convertToPem(PrivateKey privateKey) throws KeyHelperException {
+    public String convertToPem(PrivateKey privateKey) throws KeyHelperException, UtilException {
+        if (Objects.isNull(privateKey)) {
+            throw new KeyHelperException("私钥不能为空");
+        }
         return PemUtil.writePemString("PRIVATE KEY", privateKey.getEncoded());
     }
 
-
     @Override
     public String sign(String plainText, String charset, String base64OrPemPrivateKey) throws KeyHelperException {
+        if (StringUtil.isBlank(charset)) {
+            charset = IHelperConstant.DEFAULT_CHARSET;
+        }
+        if (StringUtil.isBlank(plainText) || StringUtil.isBlank(base64OrPemPrivateKey)) {
+            throw new KeyHelperException("签名原文或者私钥字串数据不能为空");
+        }
         log.info("签名，算法为 [{}], 字符集为 [{}]", algorithm, charset);
         PrivateKey privateKey = convertToPrivateKey(base64OrPemPrivateKey);
         byte[] signData;
@@ -272,6 +306,9 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
 
     @Override
     public byte[] sign(byte[] plainText, PrivateKey privateKey) throws KeyHelperException {
+        if (Objects.isNull(plainText) || plainText.length <= 0 || Objects.isNull(privateKey)) {
+            throw new KeyHelperException("签名原文或者私钥数据不能为空");
+        }
         try {
             signature.initSign(privateKey);
         } catch (InvalidKeyException e) {
@@ -288,12 +325,21 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     }
 
     @Override
-    public byte[] sign(byte[] plainText, byte[] privateKey) throws CertificateHelperException {
+    public byte[] sign(byte[] plainText, byte[] privateKey) throws KeyHelperException {
+        if (Objects.isNull(plainText) || plainText.length <= 0 || Objects.isNull(privateKey) || privateKey.length <= 0) {
+            throw new KeyHelperException("签名原文或者私钥数据不能为空");
+        }
         return sign(plainText, convertToPrivateKey(privateKey));
     }
 
     @Override
     public boolean verify(String plainText, String charset, String base64OrPemPublicKey, String base64Signature) throws KeyHelperException {
+        if (StringUtil.isBlank(charset)) {
+            charset = IHelperConstant.DEFAULT_CHARSET;
+        }
+        if (StringUtil.isBlank(plainText) || StringUtil.isBlank(base64OrPemPublicKey) || StringUtil.isBlank(base64Signature)) {
+            throw new KeyHelperException("签名原文或者公钥字串或者签名不能为空");
+        }
         log.info("验签，签名算法为 [{}], 字符集为 [{}]", signAlgorithm, charset);
         PublicKey publicKey = convertToPublicKey(base64OrPemPublicKey);
         byte[] signByte = Base64Util.decode2byte(base64Signature);
@@ -326,12 +372,18 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     }
 
     @Override
-    public boolean verify(byte[] plainText, byte[] publicKey, byte[] signature) throws CertificateHelperException {
+    public boolean verify(byte[] plainText, byte[] publicKey, byte[] signature) throws KeyHelperException {
         return verify(plainText, convertToPublicKey(publicKey), signature);
     }
 
     @Override
     public String encrypt(String plainText, String charset, String base64OrPemPublicKey) throws KeyHelperException {
+        if (StringUtil.isBlank(charset)) {
+            charset = IHelperConstant.DEFAULT_CHARSET;
+        }
+        if (StringUtil.isBlank(plainText) || StringUtil.isBlank(base64OrPemPublicKey)) {
+            throw new KeyHelperException("加密原文或者公钥字串不能为空");
+        }
         log.info("加密，加密算法为 [{}], 字符集为 [{}]", cipherAlgorithm, charset);
         byte[] encrypt;
         try {
@@ -346,33 +398,35 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     }
 
     @Override
-    public byte[] encrypt(byte[] plainText, PublicKey publicKey) throws CertificateHelperException {
+    public byte[] encrypt(byte[] plainText, PublicKey publicKey) throws KeyHelperException {
+        if (Objects.isNull(plainText) || plainText.length <= 0 || Objects.isNull(publicKey)) {
+            throw new KeyHelperException("加密字串与公钥钥不能为空");
+        }
         try {
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         } catch (InvalidKeyException e) {
             log.error("无效的密钥规范异常", e);
             throw new KeyHelperException("无效的密钥规范异常", e);
         }
-        byte[] encrypt;
-        try {
-            encrypt = cipher.doFinal(plainText);
-        } catch (IllegalBlockSizeException e) {
-            log.error("非法块大小异常", e);
-            throw new KeyHelperException("非法块大小异常", e);
-        } catch (BadPaddingException e) {
-            log.error("错误填充异常", e);
-            throw new KeyHelperException("错误填充异常", e);
-        }
-        return encrypt;
+        return doCipher(plainText);
     }
 
     @Override
-    public byte[] encrypt(byte[] plainText, byte[] publicKey) throws CertificateHelperException {
+    public byte[] encrypt(byte[] plainText, byte[] publicKey) throws KeyHelperException {
+        if (Objects.isNull(plainText) || plainText.length <= 0 || Objects.isNull(publicKey) || publicKey.length <= 0) {
+            throw new KeyHelperException("加密字串与公钥钥不能为空");
+        }
         return encrypt(plainText, convertToPublicKey(publicKey));
     }
 
     @Override
     public String decrypt(String base64CipherText, String charset, String base64OrPemPrivateKey) throws KeyHelperException {
+        if (StringUtil.isBlank(charset)) {
+            charset = IHelperConstant.DEFAULT_CHARSET;
+        }
+        if (StringUtil.isBlank(base64CipherText) || StringUtil.isBlank(base64OrPemPrivateKey)) {
+            throw new KeyHelperException("加密数据或者私钥字串不能为空");
+        }
         log.info("解密，加密算法为 [{}], 字符集为 [{}]", cipherAlgorithm, charset);
         byte[] cipherText = Base64Util.decode2byte(base64CipherText);
 
@@ -389,7 +443,10 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     }
 
     @Override
-    public byte[] decrypt(byte[] cipherText, PrivateKey privateKey) throws CertificateHelperException {
+    public byte[] decrypt(byte[] cipherText, PrivateKey privateKey) throws KeyHelperException {
+        if (Objects.isNull(cipherText) || cipherText.length <= 0 || Objects.isNull(privateKey)) {
+            throw new KeyHelperException("解密字串与私钥不能为空");
+        }
         try {
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
         } catch (InvalidKeyException e) {
@@ -397,22 +454,15 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
             throw new KeyHelperException("无效的密钥异常", e);
         }
 
-        byte[] plainTextByte;
-        try {
-            plainTextByte = cipher.doFinal(cipherText);
-        } catch (IllegalBlockSizeException e) {
-            log.error("非法块大小异常", e);
-            throw new KeyHelperException("非法块大小异常", e);
-        } catch (BadPaddingException e) {
-            log.error("错误填充异常", e);
-            throw new KeyHelperException("错误填充异常", e);
-        }
-        return plainTextByte;
+        return doCipher(cipherText);
     }
 
 
     @Override
-    public byte[] decrypt(byte[] cipherText, byte[] privateKey) throws CertificateHelperException {
+    public byte[] decrypt(byte[] cipherText, byte[] privateKey) throws KeyHelperException {
+        if (Objects.isNull(cipherText) || cipherText.length <= 0 || Objects.isNull(privateKey) || privateKey.length <= 0) {
+            throw new KeyHelperException("解密字串与私钥不能为空");
+        }
         return decrypt(cipherText, convertToPrivateKey(privateKey));
     }
 
@@ -420,47 +470,39 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public String convertToPkcs1Pem(PrivateKey privateKey) throws KeyHelperException {
         log.info("私钥转换成 PKCS#1 格式的 PEM 字串");
-        if (Objects.isNull(privateKey)) {
-            log.error("私钥不能为空");
-            throw new KeyHelperException("私钥不能为空");
-        }
-        byte[] data;
-        try {
-            data = KeyUtil.convertPkcs8ToPkcs1(privateKey);
-        } catch (IOException e) {
-            log.error("转换成 PKCS1 格式失败", e);
-            throw new KeyHelperException("转换成 PKCS1 格式失败", e);
-        }
+        byte[] data = getPkcs1PrivateData(privateKey);
         String pemPrivateKey = KeyUtil.write2Pem(algorithm.toUpperCase() + " PRIVATE KEY", data);
         log.info("私钥转换成 PKCS#1 格式的 PEM 字串成功");
         return pemPrivateKey;
     }
 
+
     @Override
     public String convertToString(PublicKey publicKey) throws KeyHelperException {
-        return KeyUtil.convertPublicKey2Base64String(publicKey);
+        try {
+            return KeyUtil.convertPublicKey2Base64String(publicKey);
+        } catch (UtilException e) {
+            throw new KeyHelperException("转换异常", e);
+        }
     }
 
     @Override
     public String convertToPem(PublicKey publicKey) throws KeyHelperException {
-        return PemUtil.writePemString("PUBLIC KEY", publicKey.getEncoded());
+        if (Objects.isNull(publicKey)) {
+            throw new KeyHelperException("公钥不能为空");
+        }
+        try {
+            return PemUtil.writePemString("PUBLIC KEY", publicKey.getEncoded());
+        } catch (UtilException e) {
+            throw new KeyHelperException(e);
+        }
     }
 
 
     @Override
     public String convertToPkcs1String(PrivateKey privateKey) throws KeyHelperException {
         log.info("私钥转换成 Base64 PKCS#1 格式的字串");
-        if (Objects.isNull(privateKey)) {
-            log.error("私钥不能为空");
-            throw new KeyHelperException("私钥不能为空");
-        }
-        byte[] data;
-        try {
-            data = KeyUtil.convertPkcs8ToPkcs1(privateKey);
-        } catch (IOException e) {
-            log.error("转换成 PKCS1 格式失败", e);
-            throw new KeyHelperException("转换成 PKCS1 格式失败", e);
-        }
+        byte[] data = getPkcs1PrivateData(privateKey);
         String base64PrivateKey = Base64Util.encode2String(data);
         log.info("私钥转换成 Base64 PKCS#1 格式的字串成功");
         return base64PrivateKey;
@@ -474,4 +516,42 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
      * @throws KeyHelperException 证书/密钥帮助类异常
      */
     protected abstract PublicKey doConvertPrivateKey2PublicKey(PrivateKey privateKey) throws KeyHelperException;
+
+    private byte[] doCipher(byte[] plainText) {
+        byte[] encrypt;
+        try {
+            encrypt = cipher.doFinal(plainText);
+        } catch (IllegalBlockSizeException e) {
+            log.error("非法块大小异常", e);
+            throw new KeyHelperException("非法块大小异常", e);
+        } catch (BadPaddingException e) {
+            log.error("错误填充异常", e);
+            throw new KeyHelperException("错误填充异常", e);
+        }
+        return encrypt;
+    }
+
+    private byte[] getPkcs1PrivateData(PrivateKey privateKey) {
+        if (Objects.isNull(privateKey)) {
+            log.error("私钥不能为空");
+            throw new KeyHelperException("私钥不能为空");
+        }
+        byte[] data;
+        try {
+            data = KeyUtil.convertPkcs8ToPkcs1(privateKey);
+        } catch (IOException e) {
+            log.error("转换成 PKCS1 格式失败", e);
+            throw new KeyHelperException("转换成 PKCS1 格式失败", e);
+        }
+        return data;
+    }
+
+    private byte[] getEncoded(Encodable encode) throws KeyHelperException {
+        try {
+            return encode.getEncoded();
+        } catch (IOException e) {
+            log.error("获取公钥字节码异常", e);
+            throw new KeyHelperException("获取公钥字节码异常", e);
+        }
+    }
 }

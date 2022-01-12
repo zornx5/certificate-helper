@@ -60,6 +60,7 @@ import java.security.spec.ECFieldFp;
 import java.security.spec.EllipticCurve;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Objects;
 
 import static io.github.zornx5.helper.constant.IHelperConstant.EC_ALGORITHM;
 import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_CIPHER_ALGORITHM;
@@ -83,6 +84,9 @@ public class Sm2KeyHelper extends EcKeyHelper {
 
     @Override
     public byte[] sign(byte[] plainText, PrivateKey privateKey) throws KeyHelperException {
+        if (Objects.isNull(plainText) || plainText.length <= 0 || Objects.isNull(privateKey)) {
+            throw new KeyHelperException("签名原文或者私钥数据不能为空");
+        }
         AsymmetricKeyParameter ecParam;
         try {
             ecParam = PrivateKeyFactory.createKey(privateKey.getEncoded());
@@ -103,6 +107,9 @@ public class Sm2KeyHelper extends EcKeyHelper {
 
     @Override
     public boolean verify(byte[] content, PublicKey publicKey, byte[] sign) throws KeyHelperException {
+        if (Objects.isNull(content) || content.length <= 0 || Objects.isNull(publicKey) || Objects.isNull(sign) || sign.length <= 0) {
+            throw new KeyHelperException("签名原文或者私钥数据不能为空");
+        }
         AsymmetricKeyParameter ecParam;
         try {
             ecParam = ECUtil.generatePublicKeyParameter(publicKey);
@@ -118,6 +125,9 @@ public class Sm2KeyHelper extends EcKeyHelper {
 
     @Override
     public PrivateKey convertPrivateKeyPkcs1ToPkcs8(byte[] sec1PrivateKey) throws KeyHelperException {
+        if (Objects.isNull(sec1PrivateKey) || sec1PrivateKey.length <= 0) {
+            throw new KeyHelperException("SEC1 私钥数据不能为空");
+        }
         log.info("转换「{}」旧 SEC.1 （Openssl）私钥成 PKCS#8 （Java）格式", algorithm);
         SM2P256V1Curve sm2P256V1Curve = new SM2P256V1Curve();
         BigInteger q = sm2P256V1Curve.getQ();
