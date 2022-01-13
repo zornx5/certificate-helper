@@ -41,4 +41,16 @@ public class StringUtilTest {
         Assert.assertFalse(StringUtil.isBlank(" q "));
         Assert.assertFalse(StringUtil.isBlank(" q \n"));
     }
+
+    @Test
+    public void isNotBlank(){
+        Assert.assertFalse(StringUtil.isNotBlank(""));
+        Assert.assertFalse(StringUtil.isNotBlank("  "));
+        Assert.assertFalse(StringUtil.isNotBlank("  \n"));
+        Assert.assertFalse(StringUtil.isNotBlank("  \t"));
+        Assert.assertFalse(StringUtil.isNotBlank("  \n\r"));
+        Assert.assertTrue(StringUtil.isNotBlank("q"));
+        Assert.assertTrue(StringUtil.isNotBlank(" q "));
+        Assert.assertTrue(StringUtil.isNotBlank(" q \n"));
+    }
 }
