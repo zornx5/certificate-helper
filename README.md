@@ -13,11 +13,12 @@
         <img src="https://app.codacy.com/project/badge/Grade/88a8612afc1440c992d0c8a0f0666a07" alt="code quality"/>
     </a>
     <a href="https://codecov.io/gh/zornx5/certificate-helper">
-        <img src="https://codecov.io/gh/zornx5/certificate-helper/branch/v5-master/graph/badge.svg?token=D1ERZRC4Z2" alt="code cover"/>
-    </a>
+        <img src="https://codecov.io/gh/zornx5/certificate-helper/branch/main/graph/badge.svg?token=D1ERZRC4Z2" alt="code cover"/>
+      </a>
     <a target="_blank" href='https://github.com/zornx5/certificate-helper'>
         <img src="https://img.shields.io/github/stars/zornx5/certificate-helper.svg?style=social" alt="github star"/>
     </a>
+
 </p>
 
 
