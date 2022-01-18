@@ -26,5 +26,10 @@ jobs:
       run: mvn -B package --file pom.xml
     - name: Cobertura with Maven
       run: mvn cobertura:cobertura -Dmaven.javadoc.skip.true
-    - name: Upload cobertura to codecov
-      run: bash <(curl -s https://codecov.io/bash)
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v2
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: true
+        files: ./target/site/cobertura/coverage.xml,./target/cobertura/cobertura.ser
+        flags: unittests
