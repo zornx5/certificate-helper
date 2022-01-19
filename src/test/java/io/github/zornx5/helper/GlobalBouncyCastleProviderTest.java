@@ -25,41 +25,50 @@
 
 package io.github.zornx5.helper;
 
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.security.Provider;
 
 public class GlobalBouncyCastleProviderTest {
 
-    @BeforeClass
-    public static void beforeClass() {
+    @BeforeAll
+    public static void init() {
         GlobalBouncyCastleProvider.setUseBouncyCastle(true);
     }
 
-    @AfterClass
-    public static void aftClass() {
+    @AfterAll
+    public static void shutdown() {
         GlobalBouncyCastleProvider.setUseBouncyCastle(true);
     }
 
     @Test
-    public void globalBouncyCastleProviderTest() {
-        // 测试单例
+    @DisplayName("单例生成测试")
+    public void globalBouncyCastleProviderSingletonTest() {
         Provider provider = GlobalBouncyCastleProvider.INSTANCE.getProvider();
-        Provider provider1 = GlobalBouncyCastleProvider.INSTANCE.getProvider();
-        Assert.assertNotNull(provider);
-        Assert.assertNotNull(provider1);
-        Assert.assertEquals(provider, provider1);
+        Provider providerAnother = GlobalBouncyCastleProvider.INSTANCE.getProvider();
+        Assertions.assertNotNull(provider);
+        Assertions.assertNotNull(providerAnother);
+        Assertions.assertEquals(provider, providerAnother);
+    }
 
+    @Test
+    @DisplayName("使用 BC 测试")
+    public void globalBouncyCastleProviderUseBcTest() {
         GlobalBouncyCastleProvider.setUseBouncyCastle(true);
-        Provider provider2 = GlobalBouncyCastleProvider.INSTANCE.getProvider();
-        Assert.assertNotNull(provider2);
-        Assert.assertEquals(provider, provider2);
+        Provider provider = GlobalBouncyCastleProvider.INSTANCE.getProvider();
+        Assertions.assertNotNull(provider);
+        Assertions.assertEquals("BC", provider.getName());
+    }
 
+    @Test
+    @DisplayName("强制不使用 BC 测试")
+    public void globalBouncyCastleProviderUseJdkTest() {
         GlobalBouncyCastleProvider.setUseBouncyCastle(false);
-        Provider provider3 = GlobalBouncyCastleProvider.INSTANCE.getProvider();
-        Assert.assertNull(provider3);
+        Provider provider = GlobalBouncyCastleProvider.INSTANCE.getProvider();
+        Assertions.assertNull(provider);
     }
 }

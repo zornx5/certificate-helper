@@ -170,7 +170,7 @@ public class CertificateUtil {
 
     /**
      * 构建 {@link X500Name}<br>
-     * names 的 key 值必须是 {@link org.bouncycastle.asn1.x500.style.BCStyle} DefaultLookUp 中存在的值（大小写不敏感）
+     * names 的 key 值必须是 {@link BCStyle} DefaultLookUp 中存在的值（大小写不敏感）
      *
      * @param names 名称 map
      * @return {@link X500Name}
@@ -196,7 +196,7 @@ public class CertificateUtil {
     }
 
     public static Certificate assembleCertificate(TBSCertificate tbsCertificate, PrivateKey issuerPrivateKey) throws UtilException {
-        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKey2PrivateKeyInfo(issuerPrivateKey);
+        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
         IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
 
@@ -224,7 +224,7 @@ public class CertificateUtil {
      * @throws UtilException 工具类异常
      */
     public static PKCS10CertificationRequest generateCertificationRequest(X500Name subject, PrivateKey issuerPrivateKey) throws UtilException {
-        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKey2PrivateKeyInfo(issuerPrivateKey);
+        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
         IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
         PublicKey publicKey = helper.convertToPublicKey(issuerPrivateKey);
@@ -249,7 +249,7 @@ public class CertificateUtil {
      * @return PKCS#10 认证请求是否匹配
      */
     public static boolean checkCertificationRequest(PKCS10CertificationRequest csr, PrivateKey issuerPrivateKey) {
-        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKey2PrivateKeyInfo(issuerPrivateKey);
+        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
         IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
 
@@ -373,7 +373,7 @@ public class CertificateUtil {
      * @return 检查 X.509 证书是否匹配
      */
     public static boolean checkCertificate(Certificate certificate, PrivateKey issuerPrivateKey) {
-        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKey2PrivateKeyInfo(issuerPrivateKey);
+        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
         IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
 
@@ -454,7 +454,7 @@ public class CertificateUtil {
     }
 
     public static X509Certificate convertPem2Certificate(String pemCertificate) {
-        return convertByte2Certificate(KeyUtil.read2Pem(pemCertificate));
+        return convertByte2Certificate(PemUtil.readPemOrBase64Content(pemCertificate));
     }
 
     public static X509Certificate convertBase64String2Certificate(String base64Certificate) {

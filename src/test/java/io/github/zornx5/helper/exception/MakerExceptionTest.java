@@ -25,25 +25,25 @@
 
 package io.github.zornx5.helper.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class MakerExceptionTest {
 
     @Test
     public void testWork() {
         MakerException utilException = new MakerException();
-        Assert.assertTrue(utilException instanceof CertificateHelperException);
+        Assertions.assertTrue(utilException instanceof CertificateHelperException);
 
         MakerException utilException1 = new MakerException("测试");
-        Assert.assertEquals(utilException1.getMessage(), "测试");
+        Assertions.assertEquals(utilException1.getMessage(), "测试");
 
         MakerException utilException2 = new MakerException("测试1", new MakerException());
-        Assert.assertEquals(utilException2.getMessage(), "测试1");
-        Assert.assertTrue(utilException2.getCause() instanceof MakerException);
+        Assertions.assertEquals(utilException2.getMessage(), "测试1");
+        Assertions.assertTrue(utilException2.getCause() instanceof MakerException);
 
         MakerException utilException3 = new MakerException(new KeyHelperException());
-        Assert.assertTrue(utilException3.getCause() instanceof KeyHelperException);
+        Assertions.assertTrue(utilException3.getCause() instanceof KeyHelperException);
     }
 
 }

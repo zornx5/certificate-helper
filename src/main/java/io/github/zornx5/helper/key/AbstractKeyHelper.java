@@ -155,7 +155,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
         String base64PublicKey = Base64Util.encode2String(publicKey);
         String base64AnotherPublicKey;
         try {
-            base64AnotherPublicKey = KeyUtil.convertPublicKey2Base64String(anotherPublicKey);
+            base64AnotherPublicKey = KeyUtil.convertPublicKeyToBase64String(anotherPublicKey);
         } catch (UtilException e) {
             throw new KeyHelperException("转换异常", e);
         }
@@ -202,7 +202,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public PrivateKeyInfo convertToPrivateKeyInfo(PrivateKey privateKey) throws KeyHelperException {
         try {
-            return KeyUtil.convertPrivateKey2PrivateKeyInfo(privateKey);
+            return KeyUtil.convertPrivateKeyToPrivateKeyInfo(privateKey);
         } catch (UtilException e) {
             throw new KeyHelperException("转换异常", e);
         }
@@ -259,7 +259,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public SubjectPublicKeyInfo convertToSubjectPublicKeyInfo(PublicKey publicKey) throws CertificateHelperException {
         try {
-            return KeyUtil.convertToSubjectPublicKeyInfo(publicKey);
+            return KeyUtil.convertPublicKeyToSubjectPublicKeyInfo(publicKey);
         } catch (UtilException e) {
             throw new KeyHelperException("转换异常", e);
         }
@@ -268,7 +268,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public String convertToString(PrivateKey privateKey) throws KeyHelperException {
         try {
-            return KeyUtil.convertPrivateKey2Base64String(privateKey);
+            return KeyUtil.convertPrivateKeyToBase64String(privateKey);
         } catch (UtilException e) {
             throw new KeyHelperException("转换异常", e);
         }
@@ -471,7 +471,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     public String convertToPkcs1Pem(PrivateKey privateKey) throws KeyHelperException {
         log.info("私钥转换成 PKCS#1 格式的 PEM 字串");
         byte[] data = getPkcs1PrivateData(privateKey);
-        String pemPrivateKey = KeyUtil.write2Pem(algorithm.toUpperCase() + " PRIVATE KEY", data);
+        String pemPrivateKey = PemUtil.writePemString(algorithm.toUpperCase() + " PRIVATE KEY", data);
         log.info("私钥转换成 PKCS#1 格式的 PEM 字串成功");
         return pemPrivateKey;
     }
@@ -480,7 +480,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public String convertToString(PublicKey publicKey) throws KeyHelperException {
         try {
-            return KeyUtil.convertPublicKey2Base64String(publicKey);
+            return KeyUtil.convertPublicKeyToBase64String(publicKey);
         } catch (UtilException e) {
             throw new KeyHelperException("转换异常", e);
         }
@@ -538,8 +538,8 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
         }
         byte[] data;
         try {
-            data = KeyUtil.convertPkcs8ToPkcs1(privateKey);
-        } catch (IOException e) {
+            data = KeyUtil.convertPrivateKeyToPkcs1(privateKey);
+        } catch (UtilException e) {
             log.error("转换成 PKCS1 格式失败", e);
             throw new KeyHelperException("转换成 PKCS1 格式失败", e);
         }

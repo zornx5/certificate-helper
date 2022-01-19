@@ -156,7 +156,7 @@ public class X509CertificateMaker {
         if (certLevel == CertLevel.EndEntity) {
             if (keyUsage.hasUsages(KeyUsage.keyCertSign)) {
                 throw new IllegalArgumentException(
-                        "keyusage keyCertSign is not allowed in EndEntity Certificate");
+                        "key usage keyCertSign is not allowed in EndEntity Certificate");
             }
         }
 

@@ -25,25 +25,25 @@
 
 package io.github.zornx5.helper.exception;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class UtilExceptionTest {
 
     @Test
     public void testWork() {
         UtilException utilException = new UtilException();
-        Assert.assertTrue(utilException instanceof CertificateHelperException);
+        Assertions.assertTrue(utilException instanceof CertificateHelperException);
 
         UtilException utilException1 = new UtilException("测试");
-        Assert.assertEquals(utilException1.getMessage(), "测试");
+        Assertions.assertEquals(utilException1.getMessage(), "测试");
 
         UtilException utilException2 = new UtilException("测试1", new UtilException());
-        Assert.assertEquals(utilException2.getMessage(), "测试1");
-        Assert.assertTrue(utilException2.getCause() instanceof UtilException);
+        Assertions.assertEquals(utilException2.getMessage(), "测试1");
+        Assertions.assertTrue(utilException2.getCause() instanceof UtilException);
 
         UtilException utilException3 = new UtilException(new KeyHelperException());
-        Assert.assertTrue(utilException3.getCause() instanceof KeyHelperException);
+        Assertions.assertTrue(utilException3.getCause() instanceof KeyHelperException);
     }
 
 }

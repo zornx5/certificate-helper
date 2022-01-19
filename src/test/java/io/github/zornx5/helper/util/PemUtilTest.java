@@ -2,13 +2,13 @@ package io.github.zornx5.helper.util;
 
 import io.github.zornx5.helper.constant.IHelperConstant;
 import io.github.zornx5.helper.key.KeyHelperManager;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.security.PrivateKey;
 
-import static io.github.zornx5.helper.KeyContent.base64RsaPrivateKey;
-import static io.github.zornx5.helper.KeyContent.pemRsaPrivateKey;
+import static io.github.zornx5.helper.KeyTestContent.base64RsaPrivateKey;
+import static io.github.zornx5.helper.KeyTestContent.pemRsaPrivateKey;
 
 public class PemUtilTest {
 
@@ -16,8 +16,8 @@ public class PemUtilTest {
     public void readPemOrBase64Content() {
         byte[] bytes = PemUtil.readPemOrBase64Content(base64RsaPrivateKey);
         byte[] bytes1 = PemUtil.readPemOrBase64Content(pemRsaPrivateKey);
-        Assert.assertNotNull(bytes);
-        Assert.assertNotNull(bytes1);
+        Assertions.assertNotNull(bytes);
+        Assertions.assertNotNull(bytes1);
         PrivateKey privateKey = KeyHelperManager.getByName(IHelperConstant.RSA_ALGORITHM).convertToPrivateKey(bytes);
         PrivateKey privateKey1 = KeyHelperManager.getByName(IHelperConstant.RSA_ALGORITHM).convertToPrivateKey(bytes1);
         System.out.println(privateKey);

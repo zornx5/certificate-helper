@@ -35,9 +35,9 @@ import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.jcajce.provider.asymmetric.rsa.BCRSAPrivateKey;
 import org.bouncycastle.jcajce.provider.asymmetric.rsa.BCRSAPublicKey;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
@@ -48,14 +48,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.zornx5.helper.KeyContent.base64RsaPrivateKey;
-import static io.github.zornx5.helper.KeyContent.base64RsaPublicKey;
-import static io.github.zornx5.helper.KeyContent.base64Sm2PrivateKey;
-import static io.github.zornx5.helper.KeyContent.base64Sm2PublicKey;
-import static io.github.zornx5.helper.KeyContent.pemRsaPrivateKey;
-import static io.github.zornx5.helper.KeyContent.pemRsaPublicKey;
-import static io.github.zornx5.helper.KeyContent.pemSm2PrivateKey;
-import static io.github.zornx5.helper.KeyContent.pemSm2PublicKey;
+import static io.github.zornx5.helper.KeyTestContent.base64RsaPrivateKey;
+import static io.github.zornx5.helper.KeyTestContent.base64RsaPublicKey;
+import static io.github.zornx5.helper.KeyTestContent.base64Sm2PrivateKey;
+import static io.github.zornx5.helper.KeyTestContent.base64Sm2PublicKey;
+import static io.github.zornx5.helper.KeyTestContent.pemRsaPrivateKey;
+import static io.github.zornx5.helper.KeyTestContent.pemRsaPublicKey;
+import static io.github.zornx5.helper.KeyTestContent.pemSm2PrivateKey;
+import static io.github.zornx5.helper.KeyTestContent.pemSm2PublicKey;
 
 @Slf4j
 public class RsaKeyHelperTest {
@@ -64,17 +64,17 @@ public class RsaKeyHelperTest {
     private static PublicKey sm2PublicKey;
     private final IKeyHelper helper = new RsaKeyHelper();
 
-    @BeforeClass
-    public static void beforeClass() {
+    @BeforeAll
+    public static void init() {
         GlobalBouncyCastleProvider.setUseBouncyCastle(true);
         KeyPair sm2KeyPair = null;
         try {
             sm2KeyPair = new Sm2KeyHelper().generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(sm2KeyPair);
+        Assertions.assertNotNull(sm2KeyPair);
         sm2PrivateKey = sm2KeyPair.getPrivate();
         sm2PublicKey = sm2KeyPair.getPublic();
     }
@@ -82,64 +82,64 @@ public class RsaKeyHelperTest {
     @Test
     public void generateKeyPair() {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
 
-        Assert.assertEquals(IHelperConstant.RSA_ALGORITHM, privateKey.getAlgorithm());
-        Assert.assertEquals(IHelperConstant.RSA_ALGORITHM, publicKey.getAlgorithm());
-        Assert.assertEquals("PKCS#8", privateKey.getFormat());
-        Assert.assertEquals(IHelperConstant.X509_CERTIFICATE_TYPE, publicKey.getFormat());
-        Assert.assertTrue(privateKey instanceof RSAPrivateKey);
-        Assert.assertTrue(publicKey instanceof RSAPublicKey);
-        Assert.assertTrue(privateKey instanceof BCRSAPrivateKey);
-        Assert.assertTrue(publicKey instanceof BCRSAPublicKey);
+        Assertions.assertEquals(IHelperConstant.RSA_ALGORITHM, privateKey.getAlgorithm());
+        Assertions.assertEquals(IHelperConstant.RSA_ALGORITHM, publicKey.getAlgorithm());
+        Assertions.assertEquals("PKCS#8", privateKey.getFormat());
+        Assertions.assertEquals(IHelperConstant.X509_CERTIFICATE_TYPE, publicKey.getFormat());
+        Assertions.assertTrue(privateKey instanceof RSAPrivateKey);
+        Assertions.assertTrue(publicKey instanceof RSAPublicKey);
+        Assertions.assertTrue(privateKey instanceof BCRSAPrivateKey);
+        Assertions.assertTrue(publicKey instanceof BCRSAPublicKey);
 
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assert.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
     public void generateKeyPairWithNegativeKeySize() {
         KeyPair keyPair = helper.generateKeyPair(-100);
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assert.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
     public void generateKeyPairWithKeySize512() {
         KeyPair keyPair = helper.generateKeyPair(512);
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assert.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
     public void generateKeyPairWithKeySize5120() {
         KeyPair keyPair = helper.generateKeyPair(5120);
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assert.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
     public void generateKeyPairWithKeySize3000() {
         KeyPair keyPair = helper.generateKeyPair(3000);
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assert.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
     public void getKeySize() {
         int keySize = 1024;
         KeyPair keyPair = helper.generateKeyPair(keySize);
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
 
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
@@ -149,17 +149,17 @@ public class RsaKeyHelperTest {
             privateKeySize = new RsaKeyHelper().getKeySize(privateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotEquals(0, privateKeySize);
+        Assertions.assertNotEquals(0, privateKeySize);
         try {
             publicKeySize = new RsaKeyHelper().getKeySize(publicKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotEquals(0, publicKeySize);
-        Assert.assertEquals(keySize, privateKeySize, publicKeySize);
+        Assertions.assertNotEquals(0, publicKeySize);
+        Assertions.assertEquals(keySize, privateKeySize, publicKeySize);
     }
 
     @Test
@@ -170,7 +170,7 @@ public class RsaKeyHelperTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Assert.assertEquals(0, sm2PrivateKeySize);
+        Assertions.assertEquals(0, sm2PrivateKeySize);
     }
 
     @Test
@@ -181,43 +181,43 @@ public class RsaKeyHelperTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Assert.assertEquals(0, sm2PublicKeySize);
+        Assertions.assertEquals(0, sm2PublicKeySize);
     }
 
     @Test
     public void checkKeyPairWithNull() {
-        Assert.assertFalse(helper.checkKeyPair(null, (String) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKey) null, (SubjectPublicKeyInfo) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKeyInfo) null, (PublicKey) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKeyInfo) null, (SubjectPublicKeyInfo) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKey) null, (PublicKey) null));
-        Assert.assertFalse(helper.checkKeyPair(null, (byte[]) null));
+        Assertions.assertFalse(helper.checkKeyPair(null, (String) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKey) null, (SubjectPublicKeyInfo) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKeyInfo) null, (PublicKey) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKeyInfo) null, (SubjectPublicKeyInfo) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKey) null, (PublicKey) null));
+        Assertions.assertFalse(helper.checkKeyPair(null, (byte[]) null));
     }
 
     @Test
     public void checkKeyPairWithString() {
-        Assert.assertTrue(helper.checkKeyPair(base64RsaPrivateKey, base64RsaPublicKey));
-        Assert.assertTrue(helper.checkKeyPair(pemRsaPrivateKey, pemRsaPublicKey));
-        Assert.assertTrue(helper.checkKeyPair(base64RsaPrivateKey, pemRsaPublicKey));
-        Assert.assertTrue(helper.checkKeyPair(pemRsaPrivateKey, base64RsaPublicKey));
+        Assertions.assertTrue(helper.checkKeyPair(base64RsaPrivateKey, base64RsaPublicKey));
+        Assertions.assertTrue(helper.checkKeyPair(pemRsaPrivateKey, pemRsaPublicKey));
+        Assertions.assertTrue(helper.checkKeyPair(base64RsaPrivateKey, pemRsaPublicKey));
+        Assertions.assertTrue(helper.checkKeyPair(pemRsaPrivateKey, base64RsaPublicKey));
     }
 
     @Test
     public void checkKeyPairWithErrorAlgorithm() {
-        Assert.assertFalse(helper.checkKeyPair(base64Sm2PrivateKey, base64Sm2PublicKey));
-        Assert.assertFalse(helper.checkKeyPair(pemSm2PrivateKey, pemSm2PublicKey));
-        Assert.assertFalse(helper.checkKeyPair(base64Sm2PrivateKey, pemSm2PublicKey));
-        Assert.assertFalse(helper.checkKeyPair(pemSm2PrivateKey, base64Sm2PublicKey));
+        Assertions.assertFalse(helper.checkKeyPair(base64Sm2PrivateKey, base64Sm2PublicKey));
+        Assertions.assertFalse(helper.checkKeyPair(pemSm2PrivateKey, pemSm2PublicKey));
+        Assertions.assertFalse(helper.checkKeyPair(base64Sm2PrivateKey, pemSm2PublicKey));
+        Assertions.assertFalse(helper.checkKeyPair(pemSm2PrivateKey, base64Sm2PublicKey));
 
-        Assert.assertFalse(helper.checkKeyPair(sm2PrivateKey, (SubjectPublicKeyInfo) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKeyInfo) null, sm2PublicKey));
-        Assert.assertFalse(helper.checkKeyPair(sm2PrivateKey, (PublicKey) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKey) null, sm2PublicKey));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKey) null, (SubjectPublicKeyInfo) null));
-        Assert.assertFalse(helper.checkKeyPair(sm2PrivateKey, sm2PublicKey));
-        Assert.assertFalse(helper.checkKeyPair(sm2PrivateKey.getEncoded(), sm2PublicKey.getEncoded()));
-        Assert.assertFalse(helper.checkKeyPair(null, sm2PublicKey.getEncoded()));
-        Assert.assertFalse(helper.checkKeyPair(sm2PrivateKey.getEncoded(), null));
+        Assertions.assertFalse(helper.checkKeyPair(sm2PrivateKey, (SubjectPublicKeyInfo) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKeyInfo) null, sm2PublicKey));
+        Assertions.assertFalse(helper.checkKeyPair(sm2PrivateKey, (PublicKey) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKey) null, sm2PublicKey));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKey) null, (SubjectPublicKeyInfo) null));
+        Assertions.assertFalse(helper.checkKeyPair(sm2PrivateKey, sm2PublicKey));
+        Assertions.assertFalse(helper.checkKeyPair(sm2PrivateKey.getEncoded(), sm2PublicKey.getEncoded()));
+        Assertions.assertFalse(helper.checkKeyPair(null, sm2PublicKey.getEncoded()));
+        Assertions.assertFalse(helper.checkKeyPair(sm2PrivateKey.getEncoded(), null));
     }
 
     @Test
@@ -225,126 +225,142 @@ public class RsaKeyHelperTest {
         KeyPair keyPair = helper.generateKeyPair();
         KeyPair keyPairAnother = helper.generateKeyPair();
 
-        Assert.assertNotNull(keyPair);
-        Assert.assertNotNull(keyPairAnother);
+        Assertions.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPairAnother);
 
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKeyAnother = keyPairAnother.getPrivate();
         PublicKey publicKeyAnother = keyPairAnother.getPublic();
 
-        Assert.assertTrue(helper.checkKeyPair(privateKey, helper.convertToSubjectPublicKeyInfo(publicKey)));
-        Assert.assertTrue(helper.checkKeyPair(helper.convertToPrivateKeyInfo(privateKey), publicKey));
-        Assert.assertTrue(helper.checkKeyPair(helper.convertToPrivateKeyInfo(privateKey), helper.convertToSubjectPublicKeyInfo(publicKey)));
-        Assert.assertTrue(helper.checkKeyPair(privateKey, publicKey));
-        Assert.assertTrue(helper.checkKeyPair(privateKey.getEncoded(), publicKey.getEncoded()));
-        Assert.assertTrue(helper.checkKeyPair(privateKeyAnother, publicKeyAnother));
-        Assert.assertTrue(helper.checkKeyPair(privateKeyAnother.getEncoded(), publicKeyAnother.getEncoded()));
+        Assertions.assertTrue(helper.checkKeyPair(privateKey, helper.convertToSubjectPublicKeyInfo(publicKey)));
+        Assertions.assertTrue(helper.checkKeyPair(helper.convertToPrivateKeyInfo(privateKey), publicKey));
+        Assertions.assertTrue(helper.checkKeyPair(helper.convertToPrivateKeyInfo(privateKey), helper.convertToSubjectPublicKeyInfo(publicKey)));
+        Assertions.assertTrue(helper.checkKeyPair(privateKey, publicKey));
+        Assertions.assertTrue(helper.checkKeyPair(privateKey.getEncoded(), publicKey.getEncoded()));
+        Assertions.assertTrue(helper.checkKeyPair(privateKeyAnother, publicKeyAnother));
+        Assertions.assertTrue(helper.checkKeyPair(privateKeyAnother.getEncoded(), publicKeyAnother.getEncoded()));
 
-        Assert.assertFalse(helper.checkKeyPair(null, base64RsaPublicKey));
-        Assert.assertFalse(helper.checkKeyPair(base64RsaPrivateKey, null));
+        Assertions.assertFalse(helper.checkKeyPair(null, base64RsaPublicKey));
+        Assertions.assertFalse(helper.checkKeyPair(base64RsaPrivateKey, null));
 
-        Assert.assertFalse(helper.checkKeyPair(privateKey, publicKeyAnother));
-        Assert.assertFalse(helper.checkKeyPair(privateKeyAnother, publicKey));
+        Assertions.assertFalse(helper.checkKeyPair(privateKey, publicKeyAnother));
+        Assertions.assertFalse(helper.checkKeyPair(privateKeyAnother, publicKey));
 
-        Assert.assertFalse(helper.checkKeyPair(privateKey, (PublicKey) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKey) null, publicKey));
+        Assertions.assertFalse(helper.checkKeyPair(privateKey, (PublicKey) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKey) null, publicKey));
 
-        Assert.assertFalse(helper.checkKeyPair(privateKey, (SubjectPublicKeyInfo) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKeyInfo) null, publicKey));
-        Assert.assertFalse(helper.checkKeyPair(privateKey, (PublicKey) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKey) null, publicKey));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKey) null, (SubjectPublicKeyInfo) null));
-        Assert.assertFalse(helper.checkKeyPair(null, publicKey.getEncoded()));
-        Assert.assertFalse(helper.checkKeyPair(privateKey.getEncoded(), null));
+        Assertions.assertFalse(helper.checkKeyPair(privateKey, (SubjectPublicKeyInfo) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKeyInfo) null, publicKey));
+        Assertions.assertFalse(helper.checkKeyPair(privateKey, (PublicKey) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKey) null, publicKey));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKey) null, (SubjectPublicKeyInfo) null));
+        Assertions.assertFalse(helper.checkKeyPair(null, publicKey.getEncoded()));
+        Assertions.assertFalse(helper.checkKeyPair(privateKey.getEncoded(), null));
     }
 
     @Test
     public void exchangePrivateKeyInfoAndPrivateKey() {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
 
         PrivateKeyInfo privateKeyInfo = helper.convertToPrivateKeyInfo(privateKey);
-        Assert.assertNotNull(privateKeyInfo);
+        Assertions.assertNotNull(privateKeyInfo);
 
         PrivateKey convertPrivateKey = null;
         try {
             convertPrivateKey = helper.convertToPrivateKey(privateKeyInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(convertPrivateKey);
+        Assertions.assertNotNull(convertPrivateKey);
 
-        Assert.assertEquals(privateKey, convertPrivateKey);
+        Assertions.assertEquals(privateKey, convertPrivateKey);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPrivateKeyInfoWithNull() {
-        helper.convertToPrivateKeyInfo(null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPrivateKeyInfo(null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPrivateKeyWithStringNull() {
-        helper.convertToPrivateKey((String) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPrivateKey((String) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPrivateKeyWithPrivateKeyInfoNull() {
-        helper.convertToPrivateKey((PrivateKeyInfo) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPrivateKey((PrivateKeyInfo) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPrivateKeyWithDataNull() {
-        helper.convertToPrivateKey((byte[]) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPrivateKey((byte[]) null);
+        });
     }
 
     @Test
     public void exchangeSubjectPublicKeyInfoAndPublicKey() {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PublicKey publicKey = keyPair.getPublic();
 
         SubjectPublicKeyInfo subjectPublicKeyInfo = helper.convertToSubjectPublicKeyInfo(publicKey);
-        Assert.assertNotNull(subjectPublicKeyInfo);
+        Assertions.assertNotNull(subjectPublicKeyInfo);
 
         PublicKey convertPublicKey = null;
         try {
             convertPublicKey = helper.convertToPublicKey(subjectPublicKeyInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(convertPublicKey);
+        Assertions.assertNotNull(convertPublicKey);
 
-        Assert.assertEquals(publicKey, convertPublicKey);
+        Assertions.assertEquals(publicKey, convertPublicKey);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToSubjectPublicKeyInfoWithNull() {
-        helper.convertToSubjectPublicKeyInfo(null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToSubjectPublicKeyInfo(null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPublicKeyWithStringNull() {
-        helper.convertToPublicKey((String) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPublicKey((String) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPublicKeyWithPrivateKeyInfoNull() {
-        helper.convertToPublicKey((SubjectPublicKeyInfo) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPublicKey((SubjectPublicKeyInfo) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPublicKeyWithDataNull() {
-        helper.convertToPublicKey((byte[]) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPublicKey((byte[]) null);
+        });
     }
 
     @Test
     public void convertPrivateKey2PublicKey2() {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
 
@@ -353,16 +369,16 @@ public class RsaKeyHelperTest {
             publicKeyConvert = helper.convertPrivateKeyToPublicKey(privateKey.getEncoded());
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(publicKeyConvert);
-        Assert.assertEquals(publicKey, publicKeyConvert);
+        Assertions.assertNotNull(publicKeyConvert);
+        Assertions.assertEquals(publicKey, publicKeyConvert);
     }
 
     @Test
     public void convertPrivateKey2PublicKey() {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
 
@@ -371,25 +387,31 @@ public class RsaKeyHelperTest {
             publicKeyConvert = helper.convertToPublicKey(privateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(publicKeyConvert);
-        Assert.assertEquals(publicKey, publicKeyConvert);
+        Assertions.assertNotNull(publicKeyConvert);
+        Assertions.assertEquals(publicKey, publicKeyConvert);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertPrivateKey2PublicKeyWithPrivateKeyNull() {
-        helper.convertToPublicKey((PrivateKey) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPublicKey((PrivateKey) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertPrivateKey2PublicKeyWithDataNull() {
-        helper.convertToPublicKey((byte[]) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPublicKey((byte[]) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertPrivateKey2PublicKeyWithErrorAlgorithm() {
-        helper.convertToPublicKey(sm2PrivateKey);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPublicKey(sm2PrivateKey);
+        });
     }
 
     @Test
@@ -401,16 +423,18 @@ public class RsaKeyHelperTest {
             base64String = helper.convertToString(privateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(privateKey);
-        Assert.assertNotNull(base64String);
-        Assert.assertEquals(base64RsaPrivateKey, base64String);
+        Assertions.assertNotNull(privateKey);
+        Assertions.assertNotNull(base64String);
+        Assertions.assertEquals(base64RsaPrivateKey, base64String);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertKeyToStringPrivateKeyNull() {
-        helper.convertToString((PrivateKey) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToString((PrivateKey) null);
+        });
     }
 
     @Test
@@ -422,16 +446,18 @@ public class RsaKeyHelperTest {
             pemString = helper.convertToPem(privateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(privateKey);
-        Assert.assertNotNull(pemString);
-        Assert.assertEquals(pemRsaPrivateKey, pemString);
+        Assertions.assertNotNull(privateKey);
+        Assertions.assertNotNull(pemString);
+        Assertions.assertEquals(pemRsaPrivateKey, pemString);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertKeyToPemStringPrivateKeyNull() {
-        helper.convertToPem((PrivateKey) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPem((PrivateKey) null);
+        });
     }
 
     @Test
@@ -443,15 +469,17 @@ public class RsaKeyHelperTest {
             base64String = helper.convertToString(publicKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(publicKey);
-        Assert.assertEquals(base64RsaPublicKey, base64String);
+        Assertions.assertNotNull(publicKey);
+        Assertions.assertEquals(base64RsaPublicKey, base64String);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertKeyToStringPublicKeyNull() {
-        helper.convertToString((PublicKey) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToString((PublicKey) null);
+        });
     }
 
     @Test
@@ -463,63 +491,73 @@ public class RsaKeyHelperTest {
             pemString = helper.convertToPem(publicKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(publicKey);
-        Assert.assertEquals(pemRsaPublicKey, pemString);
+        Assertions.assertNotNull(publicKey);
+        Assertions.assertEquals(pemRsaPublicKey, pemString);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertKeyToPemStringPublicKeyNull() {
-        helper.convertToPem((PublicKey) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPem((PublicKey) null);
+        });
     }
 
     @Test
     public void exchangePkcs8AndPkcs1() {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
 
         PrivateKey privateKey = keyPair.getPrivate();
 
         String pkcs1String = helper.convertToPkcs1String(privateKey);
 
         PrivateKey convertPrivateKey = helper.convertPrivateKeyPkcs1ToPkcs8(Base64Util.decode2byte(pkcs1String));
-        Assert.assertTrue(privateKey instanceof RSAPrivateKey);
-        Assert.assertTrue(convertPrivateKey instanceof RSAPrivateKey);
+        Assertions.assertTrue(privateKey instanceof RSAPrivateKey);
+        Assertions.assertTrue(convertPrivateKey instanceof RSAPrivateKey);
 
         // TODO 这里转换回来似乎有点问题
-        Assert.assertEquals(((RSAPrivateKey) privateKey).getModulus(), ((RSAPrivateKey) convertPrivateKey).getModulus());
-        Assert.assertEquals(((RSAPrivateKey) privateKey).getPrivateExponent(), ((RSAPrivateKey) convertPrivateKey).getPrivateExponent());
+        Assertions.assertEquals(((RSAPrivateKey) privateKey).getModulus(), ((RSAPrivateKey) convertPrivateKey).getModulus());
+        Assertions.assertEquals(((RSAPrivateKey) privateKey).getPrivateExponent(), ((RSAPrivateKey) convertPrivateKey).getPrivateExponent());
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPkcs1String() {
-        helper.convertToPkcs1String(null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPkcs1String(null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertPrivateKeyPkcs1ToPkcs8() {
-        helper.convertPrivateKeyPkcs1ToPkcs8(null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertPrivateKeyPkcs1ToPkcs8(null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertPrivateKeyPkcs1ToPkcs8WithError() {
-        helper.convertPrivateKeyPkcs1ToPkcs8(Base64Util.decode2byte(base64Sm2PrivateKey));
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertPrivateKeyPkcs1ToPkcs8(Base64Util.decode2byte(base64Sm2PrivateKey));
+        });
     }
 
     @Test
     public void convertToPkcs1Pem() {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
 
         String pkcs1PrivatePem = helper.convertToPkcs1Pem(privateKey);
-        Assert.assertNotNull(pkcs1PrivatePem);
+        Assertions.assertNotNull(pkcs1PrivatePem);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertToPkcs1PemWithNull() {
-        helper.convertToPkcs1Pem(null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPkcs1Pem(null);
+        });
     }
 
     @Test
@@ -543,34 +581,46 @@ public class RsaKeyHelperTest {
         }
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void signError() {
-        helper.sign(null, null, null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.sign(null, null, null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void signError1() {
-        helper.sign(null, (PrivateKey) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.sign(null, (PrivateKey) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void signError2() {
-        helper.sign(null, (byte[]) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.sign(null, (byte[]) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void verifyError() {
-        helper.verify(null, null, null, null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.verify(null, null, null, null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void verifyError1() {
-        helper.verify(null, (PublicKey) null, null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.verify(null, (PublicKey) null, null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void verifyError2() {
-        helper.verify(null, (byte[]) null, null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.verify(null, (byte[]) null, null);
+        });
     }
 
     @Test
@@ -594,34 +644,46 @@ public class RsaKeyHelperTest {
         }
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void encryptError() {
-        helper.encrypt(null, null, null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.encrypt(null, null, null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void encryptError1() {
-        helper.encrypt(null, (PublicKey) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.encrypt(null, (PublicKey) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void encryptError2() {
-        helper.encrypt(null, (byte[]) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.encrypt(null, (byte[]) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void decryptError() {
-        helper.decrypt(null, null, null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.decrypt(null, null, null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void decryptError1() {
-        helper.decrypt(null, (PrivateKey) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.decrypt(null, (PrivateKey) null);
+        });
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void decryptError2() {
-        helper.decrypt(null, (byte[]) null);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.decrypt(null, (byte[]) null);
+        });
     }
 
     private void signAndVerify(String plainText, String charset) {
@@ -630,63 +692,63 @@ public class RsaKeyHelperTest {
             base64Sign = helper.sign(plainText, charset, base64RsaPrivateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(base64Sign);
+        Assertions.assertNotNull(base64Sign);
         boolean verify = false;
         try {
             verify = helper.verify(plainText, charset, base64RsaPublicKey, base64Sign);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertTrue(verify);
+        Assertions.assertTrue(verify);
     }
 
     private void signAndVerify1(byte[] plainText) {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
 
         byte[] sign = null;
         try {
             sign = helper.sign(plainText, keyPair.getPrivate());
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(sign);
+        Assertions.assertNotNull(sign);
 
         boolean verify = false;
         try {
             verify = helper.verify(plainText, keyPair.getPublic(), sign);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertTrue(verify);
+        Assertions.assertTrue(verify);
     }
 
     private void signAndVerify2(byte[] plainText) {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
 
         byte[] sign = null;
         try {
             sign = helper.sign(plainText, keyPair.getPrivate().getEncoded());
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(sign);
+        Assertions.assertNotNull(sign);
 
         boolean verify = false;
         try {
             verify = helper.verify(plainText, keyPair.getPublic().getEncoded(), sign);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertTrue(verify);
+        Assertions.assertTrue(verify);
     }
 
     private void encryptAndDecrypt(String plainText, String charset) {
@@ -695,65 +757,64 @@ public class RsaKeyHelperTest {
             encrypt = helper.encrypt(plainText, charset, base64RsaPublicKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(encrypt);
-        log.info("密文长度 [{}], 内容为 [{}]", encrypt.length(), encrypt);
+        Assertions.assertNotNull(encrypt);
         String decrypt = null;
         try {
             decrypt = helper.decrypt(encrypt, charset, base64RsaPrivateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(decrypt);
+        Assertions.assertNotNull(decrypt);
 
-        Assert.assertEquals(plainText, decrypt);
+        Assertions.assertEquals(plainText, decrypt);
     }
 
     private void encryptAndDecrypt1(byte[] plainText) {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         byte[] encrypt = null;
         try {
             encrypt = helper.encrypt(plainText, keyPair.getPublic());
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(encrypt);
+        Assertions.assertNotNull(encrypt);
         byte[] decrypt = null;
         try {
             decrypt = helper.decrypt(encrypt, keyPair.getPrivate());
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(decrypt);
+        Assertions.assertNotNull(decrypt);
 
-        Assert.assertArrayEquals(plainText, decrypt);
+        Assertions.assertArrayEquals(plainText, decrypt);
     }
 
     private void encryptAndDecrypt2(byte[] plainText) {
         KeyPair keyPair = helper.generateKeyPair();
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         byte[] encrypt = null;
         try {
             encrypt = helper.encrypt(plainText, keyPair.getPublic().getEncoded());
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(encrypt);
+        Assertions.assertNotNull(encrypt);
         byte[] decrypt = null;
         try {
             decrypt = helper.decrypt(encrypt, keyPair.getPrivate().getEncoded());
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(decrypt);
+        Assertions.assertNotNull(decrypt);
 
-        Assert.assertArrayEquals(plainText, decrypt);
+        Assertions.assertArrayEquals(plainText, decrypt);
     }
 }

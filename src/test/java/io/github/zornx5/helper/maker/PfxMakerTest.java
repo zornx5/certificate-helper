@@ -35,8 +35,8 @@ import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.bouncycastle.pkcs.PKCS12PfxPdu;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
@@ -73,13 +73,13 @@ public class PfxMakerTest {
             byte[] sign = helper.sign(srcData.getBytes(), privateKey);
             boolean flag = helper.verify(srcData.getBytes(), publicKey1, sign);
             if (!flag) {
-                Assert.fail();
+                Assertions.fail();
             }
 
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
     }
 }

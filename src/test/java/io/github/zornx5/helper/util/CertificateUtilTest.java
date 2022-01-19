@@ -35,9 +35,9 @@ import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x509.Certificate;
 import org.bouncycastle.asn1.x509.Time;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.security.KeyPair;
@@ -54,20 +54,20 @@ public class CertificateUtilTest {
     private static X500Name issuer;
     private static X500Name subject;
 
-    @BeforeClass
+    @BeforeAll
     public static void aftClass() {
         KeyPair sm2KeyPair = null;
         try {
             sm2KeyPair = new Sm2KeyHelper().generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(sm2KeyPair);
+        Assertions.assertNotNull(sm2KeyPair);
         sm2PrivateKey = sm2KeyPair.getPrivate();
 
         KeyPair rsaKeyPair = new RsaKeyHelper().generateKeyPair();
-        Assert.assertNotNull(rsaKeyPair);
+        Assertions.assertNotNull(rsaKeyPair);
         rsaPrivateKey = rsaKeyPair.getPrivate();
 
         KeyPair ecKeyPair = null;
@@ -75,9 +75,9 @@ public class CertificateUtilTest {
             ecKeyPair = new EcKeyHelper().generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(ecKeyPair);
+        Assertions.assertNotNull(ecKeyPair);
         ecPrivateKey = ecKeyPair.getPrivate();
 
         X500NameBuilder issuerBuilder = new X500NameBuilder();
@@ -90,7 +90,7 @@ public class CertificateUtilTest {
         issuerBuilder.addRDN(BCStyle.STREET, "getStreet");
         issuerBuilder.addRDN(BCStyle.E, "getCommonName");
         issuer = issuerBuilder.build();
-        Assert.assertNotNull(issuer);
+        Assertions.assertNotNull(issuer);
 
         X500NameBuilder subjectBuilder = new X500NameBuilder();
         subjectBuilder.addRDN(BCStyle.CN, "CN");
@@ -113,17 +113,17 @@ public class CertificateUtilTest {
         PKCS10CertificationRequest rsaSelfSignedCsr = getCsr(issuer, rsaPrivateKey);
 
         // 正例
-        Assert.assertTrue(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, sm2PrivateKey));
-        Assert.assertTrue(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, ecPrivateKey));
-        Assert.assertTrue(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, rsaPrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, sm2PrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, ecPrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, rsaPrivateKey));
 
         // 反例
-        Assert.assertFalse(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, ecPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, rsaPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, sm2PrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, rsaPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, sm2PrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, ecPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, ecPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificationRequest(sm2SelfSignedCsr, rsaPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, sm2PrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificationRequest(ecSelfSignedCsr, rsaPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, sm2PrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificationRequest(rsaSelfSignedCsr, ecPrivateKey));
     }
 
     @Test
@@ -139,17 +139,17 @@ public class CertificateUtilTest {
         Certificate rsaSelfSignedCertificate = getSelfSignedCertificate(rsaSelfSignedCsr, rsaPrivateKey);
 
         // 正例
-        Assert.assertTrue(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, sm2PrivateKey));
-        Assert.assertTrue(CertificateUtil.checkCertificate(ecSelfSignedCertificate, ecPrivateKey));
-        Assert.assertTrue(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, rsaPrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, sm2PrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificate(ecSelfSignedCertificate, ecPrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, rsaPrivateKey));
 
         // 反例
-        Assert.assertFalse(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, ecPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, rsaPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(ecSelfSignedCertificate, sm2PrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(ecSelfSignedCertificate, rsaPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, sm2PrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, ecPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, ecPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(sm2SelfSignedCertificate, rsaPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(ecSelfSignedCertificate, sm2PrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(ecSelfSignedCertificate, rsaPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, sm2PrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(rsaSelfSignedCertificate, ecPrivateKey));
     }
 
     @Test
@@ -173,24 +173,24 @@ public class CertificateUtilTest {
         Certificate rsaCertificate = getCertificate(rsaSelfSignedCertificate, rsaCsr, rsaPrivateKey);
 
         try {
-            log.info(KeyUtil.write2Pem("CERTIFICATE", rsaCertificate.getEncoded()));
+            log.info(PemUtil.writePemString("CERTIFICATE", rsaCertificate.getEncoded()));
         } catch (IOException e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
 
         // 正例
-        Assert.assertTrue(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, sm2PrivateKey));
-        Assert.assertTrue(CertificateUtil.checkCertificate(ecCertificate, ecCsr, ecPrivateKey));
-        Assert.assertTrue(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, rsaPrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, sm2PrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificate(ecCertificate, ecCsr, ecPrivateKey));
+        Assertions.assertTrue(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, rsaPrivateKey));
 
         // 反例
-        Assert.assertFalse(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, ecPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, rsaPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(ecCertificate, ecCsr, sm2PrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(ecCertificate, ecCsr, rsaPrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, sm2PrivateKey));
-        Assert.assertFalse(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, ecPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, ecPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(sm2Certificate, sm2Csr, rsaPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(ecCertificate, ecCsr, sm2PrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(ecCertificate, ecCsr, rsaPrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, sm2PrivateKey));
+        Assertions.assertFalse(CertificateUtil.checkCertificate(rsaCertificate, rsaCsr, ecPrivateKey));
     }
 
     private PKCS10CertificationRequest getCsr(X500Name issuer, PrivateKey privateKey) {
@@ -199,9 +199,9 @@ public class CertificateUtilTest {
             sm2SelfSignedCsr = CertificateUtil.generateCertificationRequest(issuer, privateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(sm2SelfSignedCsr);
+        Assertions.assertNotNull(sm2SelfSignedCsr);
         return sm2SelfSignedCsr;
     }
 
@@ -211,9 +211,9 @@ public class CertificateUtilTest {
             selfSignedCertificate = CertificateUtil.generateSelfSignedCertificate(selfSignedCsr, privateKey, new Time(new Date(), Locale.CHINA), new Time(new Date(), Locale.CHINA));
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(selfSignedCertificate);
+        Assertions.assertNotNull(selfSignedCertificate);
         return selfSignedCertificate;
     }
 
@@ -223,9 +223,9 @@ public class CertificateUtilTest {
             certificate = CertificateUtil.generateCertificate(csr, issuerCertificate, privateKey, new Time(new Date(), Locale.CHINA), new Time(new Date(), Locale.CHINA));
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(certificate);
+        Assertions.assertNotNull(certificate);
         return certificate;
     }
 }

@@ -32,6 +32,8 @@ package io.github.zornx5.helper.constant;
  */
 public interface IHelperConstant {
 
+    String DEFAULT_CHARSET = "UTF-8";
+
     int RSA_DEFAULT_KEY_SIZE = 2048;
     int RSA_MIN_KEY_SIZE = 1024;
     int RSA_MAX_KEY_SIZE = 4096;
@@ -53,7 +55,4 @@ public interface IHelperConstant {
 
     String X509_CERTIFICATE_TYPE = "X.509";
     String PKCS12_CERTIFICATE_TYPE = "PKCS12";
-
-    String DEFAULT_CHARSET = "UTF-8";
-
 }

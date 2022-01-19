@@ -34,10 +34,10 @@ import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPublicKey;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
@@ -50,8 +50,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
-import static io.github.zornx5.helper.KeyContent.base64EcPrivateKey;
-import static io.github.zornx5.helper.KeyContent.base64EcPublicKey;
+import static io.github.zornx5.helper.KeyTestContent.base64EcPrivateKey;
+import static io.github.zornx5.helper.KeyTestContent.base64EcPublicKey;
 
 @Slf4j
 public class ECKeyHelperTest {
@@ -61,16 +61,16 @@ public class ECKeyHelperTest {
 
     private final EcKeyHelper helper = new EcKeyHelper();
 
-    @BeforeClass
-    public static void beforeClass() {
+    @BeforeAll
+    public static void init() {
         GlobalBouncyCastleProvider.setUseBouncyCastle(true);
         KeyPair rsaKeyPair = new RsaKeyHelper().generateKeyPair();
-        Assert.assertNotNull(rsaKeyPair);
+        Assertions.assertNotNull(rsaKeyPair);
         rsaPrivateKey = rsaKeyPair.getPrivate();
         rsaPublicKey = rsaKeyPair.getPublic();
     }
 
-    @After
+    @AfterEach
     public void setUp() {
         helper.setEcCurve(IHelperConstant.EC_DEFAULT_CURVE);
     }
@@ -82,30 +82,32 @@ public class ECKeyHelperTest {
             keyPair = helper.generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
         log.info("privateKey algorithm: [{}], format: [{}]", privateKey.getAlgorithm(), privateKey.getFormat());
         log.info("publicKey  algorithm: [{}], format: [{}]", publicKey.getAlgorithm(), publicKey.getFormat());
         log.info("privateKey base64 encode: [{}]", new String(Base64.getEncoder().encode(privateKey.getEncoded()), StandardCharsets.UTF_8));
         log.info("publicKey  base64 encode: [{}]", new String(Base64.getEncoder().encode(publicKey.getEncoded()), StandardCharsets.UTF_8));
-        Assert.assertEquals("EC", privateKey.getAlgorithm());
-        Assert.assertEquals("EC", publicKey.getAlgorithm());
-        Assert.assertEquals("PKCS#8", privateKey.getFormat());
-        Assert.assertEquals("X.509", publicKey.getFormat());
-        Assert.assertTrue(privateKey instanceof ECPrivateKey);
-        Assert.assertTrue(publicKey instanceof ECPublicKey);
-        Assert.assertTrue(privateKey instanceof BCECPrivateKey);
-        Assert.assertTrue(publicKey instanceof BCECPublicKey);
+        Assertions.assertEquals("EC", privateKey.getAlgorithm());
+        Assertions.assertEquals("EC", publicKey.getAlgorithm());
+        Assertions.assertEquals("PKCS#8", privateKey.getFormat());
+        Assertions.assertEquals("X.509", publicKey.getFormat());
+        Assertions.assertTrue(privateKey instanceof ECPrivateKey);
+        Assertions.assertTrue(publicKey instanceof ECPublicKey);
+        Assertions.assertTrue(privateKey instanceof BCECPrivateKey);
+        Assertions.assertTrue(publicKey instanceof BCECPublicKey);
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void generateKeyPairError() {
-        helper.setEcCurve("ecCurve");
-        System.out.println(helper.getEcCurve());
-        helper.generateKeyPair();
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.setEcCurve("ecCurve");
+            helper.generateKeyPair();
+        });
+
     }
 
     @Test
@@ -115,9 +117,9 @@ public class ECKeyHelperTest {
             keyPair = helper.generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
         KeyPair keyPair1 = null;
@@ -125,22 +127,22 @@ public class ECKeyHelperTest {
             keyPair1 = helper.generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(keyPair1);
+        Assertions.assertNotNull(keyPair1);
         PrivateKey privateKey1 = keyPair1.getPrivate();
         PublicKey publicKey1 = keyPair1.getPublic();
 
 
-        Assert.assertFalse(helper.checkKeyPair(privateKey, (PublicKey) null));
-        Assert.assertFalse(helper.checkKeyPair((PrivateKey) null, publicKey));
+        Assertions.assertFalse(helper.checkKeyPair(privateKey, (PublicKey) null));
+        Assertions.assertFalse(helper.checkKeyPair((PrivateKey) null, publicKey));
 
-        Assert.assertFalse(helper.checkKeyPair(rsaPrivateKey, rsaPublicKey));
+        Assertions.assertFalse(helper.checkKeyPair(rsaPrivateKey, rsaPublicKey));
 
-        Assert.assertTrue(helper.checkKeyPair(privateKey, publicKey));
-        Assert.assertTrue(helper.checkKeyPair(privateKey1, publicKey1));
-        Assert.assertFalse(helper.checkKeyPair(privateKey, publicKey1));
-        Assert.assertFalse(helper.checkKeyPair(privateKey1, publicKey));
+        Assertions.assertTrue(helper.checkKeyPair(privateKey, publicKey));
+        Assertions.assertTrue(helper.checkKeyPair(privateKey1, publicKey1));
+        Assertions.assertFalse(helper.checkKeyPair(privateKey, publicKey1));
+        Assertions.assertFalse(helper.checkKeyPair(privateKey1, publicKey));
     }
 
     @Test
@@ -150,35 +152,35 @@ public class ECKeyHelperTest {
             keyPair = helper.generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
-        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKey2PrivateKeyInfo(privateKey);
-        Assert.assertNotNull(privateKeyInfo);
-        SubjectPublicKeyInfo subjectPublicKeyInfo = KeyUtil.convertToSubjectPublicKeyInfo(publicKey);
-        Assert.assertNotNull(subjectPublicKeyInfo);
+        PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(privateKey);
+        Assertions.assertNotNull(privateKeyInfo);
+        SubjectPublicKeyInfo subjectPublicKeyInfo = KeyUtil.convertPublicKeyToSubjectPublicKeyInfo(publicKey);
+        Assertions.assertNotNull(subjectPublicKeyInfo);
 
         PrivateKey convertPrivateKey = null;
         try {
             convertPrivateKey = helper.convertToPrivateKey(privateKeyInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(convertPrivateKey);
+        Assertions.assertNotNull(convertPrivateKey);
         PublicKey convertPublicKey = null;
         try {
             convertPublicKey = helper.convertToPublicKey(subjectPublicKeyInfo);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(convertPublicKey);
+        Assertions.assertNotNull(convertPublicKey);
 
-        Assert.assertEquals(privateKey, convertPrivateKey);
-        Assert.assertEquals(publicKey, convertPublicKey);
+        Assertions.assertEquals(privateKey, convertPrivateKey);
+        Assertions.assertEquals(publicKey, convertPublicKey);
 
     }
 
@@ -189,24 +191,26 @@ public class ECKeyHelperTest {
             keyPair = helper.generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PublicKey publicKey = keyPair.getPublic();
         PublicKey publicKeyConvert = null;
         try {
             publicKeyConvert = helper.convertToPublicKey(keyPair.getPrivate());
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(publicKeyConvert);
-        Assert.assertArrayEquals(publicKey.getEncoded(), publicKeyConvert.getEncoded());
+        Assertions.assertNotNull(publicKeyConvert);
+        Assertions.assertArrayEquals(publicKey.getEncoded(), publicKeyConvert.getEncoded());
     }
 
-    @Test(expected = KeyHelperException.class)
+    @Test
     public void convertPrivateKey2PublicKeyError() {
-        helper.convertToPublicKey(rsaPrivateKey);
+        Throwable exception = Assertions.assertThrows(KeyHelperException.class, () -> {
+            helper.convertToPublicKey(rsaPrivateKey);
+        });
     }
 
     @Test
@@ -215,13 +219,13 @@ public class ECKeyHelperTest {
         String base64String = null;
         try {
             privateKey = helper.convertToPrivateKey(base64EcPrivateKey);
-            base64String = KeyUtil.convertPrivateKey2Base64String(privateKey);
+            base64String = KeyUtil.convertPrivateKeyToBase64String(privateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(privateKey);
-        Assert.assertEquals(base64EcPrivateKey, base64String);
+        Assertions.assertNotNull(privateKey);
+        Assertions.assertEquals(base64EcPrivateKey, base64String);
     }
 
     @Test
@@ -230,13 +234,13 @@ public class ECKeyHelperTest {
         String base64String = null;
         try {
             publicKey = helper.convertToPublicKey(base64EcPublicKey);
-            base64String = KeyUtil.convertPublicKey2Base64String(publicKey);
+            base64String = KeyUtil.convertPublicKeyToBase64String(publicKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(publicKey);
-        Assert.assertEquals(base64EcPublicKey, base64String);
+        Assertions.assertNotNull(publicKey);
+        Assertions.assertEquals(base64EcPublicKey, base64String);
     }
 
     @Test
@@ -246,24 +250,24 @@ public class ECKeyHelperTest {
             keyPair = helper.generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
-        String pkcs8Base64Private = KeyUtil.convertPrivateKey2Base64String(privateKey);
-        String pkcs8Base64Public = KeyUtil.convertPublicKey2Base64String(publicKey);
+        String pkcs8Base64Private = KeyUtil.convertPrivateKeyToBase64String(privateKey);
+        String pkcs8Base64Public = KeyUtil.convertPublicKeyToBase64String(publicKey);
         String pkcs1Base64Private = null;
         byte[] pkcs1Private = null;
         try {
-            pkcs1Private = KeyUtil.convertPkcs8ToPkcs1(privateKey);
+            pkcs1Private = KeyUtil.convertPrivateKeyToPkcs1(privateKey);
             pkcs1Base64Private = new String(Base64.getEncoder().encode(pkcs1Private));
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(pkcs1Base64Private);
-        Assert.assertTrue(pkcs1Base64Private.trim().length() > 0);
+        Assertions.assertNotNull(pkcs1Base64Private);
+        Assertions.assertTrue(pkcs1Base64Private.trim().length() > 0);
 
         PrivateKey convertPrivateKey = null;
         try {
@@ -271,7 +275,7 @@ public class ECKeyHelperTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Assert.assertNull(convertPrivateKey);
+        Assertions.assertNull(convertPrivateKey);
     }
 
     @Test
@@ -281,18 +285,18 @@ public class ECKeyHelperTest {
             keyPair = helper.generateKeyPair();
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(keyPair);
+        Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
 
-        String pkcs8PrivateKeyPem = KeyUtil.convertToPkcs8Pem(privateKey);
-        String pkcs8PublicKeyPem = KeyUtil.convertToPkcs8Pem(publicKey);
+        String pkcs8PrivateKeyPem = KeyUtil.convertPrivateKeyToPkcs8Pem(privateKey);
+        String pkcs8PublicKeyPem = KeyUtil.convertPublicKeyToPkcs8Pem(publicKey);
         String pkcs1PrivatePem = helper.convertToPkcs1Pem(privateKey);
-        Assert.assertNotNull(pkcs8PrivateKeyPem);
-        Assert.assertNotNull(pkcs8PublicKeyPem);
-        Assert.assertNotNull(pkcs1PrivatePem);
+        Assertions.assertNotNull(pkcs8PrivateKeyPem);
+        Assertions.assertNotNull(pkcs8PublicKeyPem);
+        Assertions.assertNotNull(pkcs1PrivatePem);
     }
 
     @Test
@@ -319,18 +323,17 @@ public class ECKeyHelperTest {
             base64Sign = helper.sign(content, charset, base64EcPrivateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(base64Sign);
-        log.info("签名长度: [{}] 输出为 [{}]", base64Sign.length(), base64Sign);
+        Assertions.assertNotNull(base64Sign);
         boolean verify = false;
         try {
             verify = helper.verify(content, charset, base64EcPublicKey, base64Sign);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertTrue(verify);
+        Assertions.assertTrue(verify);
     }
 
     @Test
@@ -357,19 +360,18 @@ public class ECKeyHelperTest {
             encrypt = helper.encrypt(content, charset, base64EcPublicKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(encrypt);
-        log.info("密文长度 [{}], 内容为 [{}]", encrypt.length(), encrypt);
+        Assertions.assertNotNull(encrypt);
         String decrypt = null;
         try {
             decrypt = helper.decrypt(encrypt, charset, base64EcPrivateKey);
         } catch (Exception e) {
             e.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
-        Assert.assertNotNull(decrypt);
+        Assertions.assertNotNull(decrypt);
 
-        Assert.assertEquals(content, decrypt);
+        Assertions.assertEquals(content, decrypt);
     }
 }

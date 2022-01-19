@@ -30,15 +30,10 @@ import io.github.zornx5.helper.exception.UtilException;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
-import org.bouncycastle.util.io.pem.PemObject;
-import org.bouncycastle.util.io.pem.PemReader;
-import org.bouncycastle.util.io.pem.PemWriter;
 
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.KeyPairGenerator;
@@ -138,146 +133,86 @@ public class KeyUtil {
     }
 
 
-    public static PrivateKeyInfo convertPrivateKey2PrivateKeyInfo(PrivateKey privateKey) {
-        log.info("私钥转换成私钥信息");
+    public static PrivateKeyInfo convertPrivateKeyToPrivateKeyInfo(PrivateKey privateKey) {
         if (privateKey == null) {
-            log.error("私钥不能为空");
             throw new UtilException("私钥不能为空");
         }
-        PrivateKeyInfo privateKeyInfo = PrivateKeyInfo.getInstance(privateKey.getEncoded());
-        log.info("私钥转换成私钥信息成功");
-        return privateKeyInfo;
+        return PrivateKeyInfo.getInstance(privateKey.getEncoded());
     }
 
-    public static SubjectPublicKeyInfo convertToSubjectPublicKeyInfo(PublicKey publicKey) {
-        log.info("公钥转换成公钥信息");
+    public static SubjectPublicKeyInfo convertPublicKeyToSubjectPublicKeyInfo(PublicKey publicKey) {
         if (publicKey == null) {
-            log.error("公钥不能为空");
             throw new UtilException("公钥不能为空");
         }
-        SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
-        log.info("公钥转换成公钥信息成功");
-        return subjectPublicKeyInfo;
+        return SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
     }
 
-    public static String convertPrivateKey2Base64String(PrivateKey privateKey) {
-        log.info("私钥转换成 Base64 编码私钥");
+    public static String convertPrivateKeyToBase64String(PrivateKey privateKey) {
         if (privateKey == null) {
-            log.error("私钥不能为空");
             throw new UtilException("私钥不能为空");
         }
-        String base64PrivateKey = new String(Base64.getEncoder().encode(privateKey.getEncoded()), StandardCharsets.UTF_8);
-        log.info("私钥转换成 Base64 编码私钥成功");
-        return base64PrivateKey;
+        return new String(Base64.getEncoder().encode(privateKey.getEncoded()), StandardCharsets.UTF_8);
     }
 
-    public static String convertPrivateKeyInfo2Base64String(PrivateKeyInfo privateKeyInfo) throws IOException {
-        log.info("私钥信息转换成 Base64 编码私钥");
+    public static String convertPrivateKeyInfoToBase64String(PrivateKeyInfo privateKeyInfo) {
         if (privateKeyInfo == null) {
-            log.error("私钥信息不能为空");
             throw new UtilException("私钥信息不能为空");
         }
-        String base64PrivateKey = new String(Base64.getEncoder().encode(privateKeyInfo.getEncoded()), StandardCharsets.UTF_8);
-        log.info("私钥转换成 Base64 编码私钥成功");
-        return base64PrivateKey;
+        byte[] privateKeyInfoEncoded;
+        try {
+            privateKeyInfoEncoded = privateKeyInfo.getEncoded();
+        } catch (IOException e) {
+            throw new UtilException("私钥信息获取编码错误", e);
+        }
+        return new String(Base64.getEncoder().encode(privateKeyInfoEncoded), StandardCharsets.UTF_8);
     }
 
-    public static String convertPublicKey2Base64String(PublicKey publicKey) {
-        log.info("公钥转换成 Base64 编码公钥");
+    public static String convertPublicKeyToBase64String(PublicKey publicKey) {
         if (publicKey == null) {
-            log.error("公钥不能为空");
             throw new UtilException("公钥不能为空");
         }
-        String base64PublicKey = new String(Base64.getEncoder().encode(publicKey.getEncoded()), StandardCharsets.UTF_8);
-        log.info("公钥转换成 Base64 编码公钥成功");
-        return base64PublicKey;
+        return new String(Base64.getEncoder().encode(publicKey.getEncoded()), StandardCharsets.UTF_8);
     }
 
-    public static String convertSubjectPublicKeyInfo2Base64String(SubjectPublicKeyInfo subjectPublicKeyInfo) throws IOException {
-        log.info("公钥信息转换成 Base64 编码公钥");
+    public static String convertSubjectPublicKeyInfoToBase64String(SubjectPublicKeyInfo subjectPublicKeyInfo) {
         if (subjectPublicKeyInfo == null) {
-            log.error("公钥信息不能为空");
             throw new UtilException("公钥信息不能为空");
         }
-        String base64PublicKey = new String(Base64.getEncoder().encode(subjectPublicKeyInfo.getEncoded()), StandardCharsets.UTF_8);
-        log.info("公钥转换成 Base64 编码公钥成功");
-        return base64PublicKey;
+        byte[] subjectPublicKeyInfoEncoded;
+        try {
+            subjectPublicKeyInfoEncoded = subjectPublicKeyInfo.getEncoded();
+        } catch (IOException e) {
+            throw new UtilException("公钥信息获取编码错误", e);
+        }
+        return new String(Base64.getEncoder().encode(subjectPublicKeyInfoEncoded), StandardCharsets.UTF_8);
     }
 
-    public static byte[] convertPkcs8ToPkcs1(PrivateKey privateKey) throws IOException {
-        log.info("私钥转换成 PKCS#1 编码私钥数组");
+    public static byte[] convertPrivateKeyToPkcs1(PrivateKey privateKey) {
         if (privateKey == null) {
-            log.error("私钥不能为空");
             throw new UtilException("私钥不能为空");
         }
-        byte[] pkcs1PrivateKey = convertPrivateKey2PrivateKeyInfo(privateKey).parsePrivateKey().toASN1Primitive().getEncoded();
-        log.info("私钥转换成 PKCS#1 编码私钥数组成功");
+        byte[] pkcs1PrivateKey;
+        try {
+            pkcs1PrivateKey = convertPrivateKeyToPrivateKeyInfo(privateKey).parsePrivateKey().toASN1Primitive().getEncoded();
+        } catch (IOException e) {
+            throw new UtilException("解析成私钥错误", e);
+        }
         return pkcs1PrivateKey;
     }
 
-    public static String convertToPkcs8Pem(PrivateKey privateKey) {
-        log.info("私钥转换成 PKCS#8 格式的 PEM 字串");
+    public static String convertPrivateKeyToPkcs8Pem(PrivateKey privateKey) {
         if (privateKey == null) {
-            log.error("私钥不能为空");
             throw new UtilException("私钥不能为空");
         }
         byte[] data = privateKey.getEncoded();
-        String pemPrivateKey = write2Pem("PRIVATE KEY", data);
-        log.info("私钥转换成 PKCS#8 格式的 PEM 字串成功");
-        return pemPrivateKey;
+        return PemUtil.writePemString("PRIVATE KEY", data);
     }
 
-    public static String convertToPkcs8Pem(PublicKey publicKey) {
-        log.info("公钥转换成 PKCS#8 格式的 PEM 字串");
+    public static String convertPublicKeyToPkcs8Pem(PublicKey publicKey) {
         if (publicKey == null) {
-            log.error("公钥不能为空");
             throw new UtilException("公钥不能为空");
         }
         byte[] data = publicKey.getEncoded();
-        String pemPublicKey = write2Pem("PRIVATE KEY", data);
-        log.info("公钥转换成 PKCS#8 格式的 PEM 字串成功");
-        return pemPublicKey;
-    }
-
-    public static String write2Pem(String type, byte[] data) {
-        assert data != null;
-        PemObject pemObject = new PemObject(type, data);
-        StringWriter stringWriter = new StringWriter();
-        PemWriter pemWriter = new PemWriter(stringWriter);
-        try {
-            pemWriter.writeObject(pemObject);
-        } catch (IOException e) {
-            log.error("转换成 PKCS1 格式失败", e);
-            throw new UtilException("转换成 PKCS1 格式失败", e);
-        } finally {
-            try {
-                pemWriter.close();
-            } catch (IOException e) {
-                log.error("关闭流失败", e);
-            }
-        }
-        return stringWriter.toString();
-    }
-
-    public static byte[] read2Pem(String pem) {
-        PemReader pemReader = null;
-        PemObject pemObject;
-        try {
-            StringReader reader = new StringReader(pem);
-            pemReader = new PemReader(reader);
-            pemObject = pemReader.readPemObject();
-        } catch (IOException e) {
-            log.error("获取 PEM 失败", e);
-            throw new UtilException("获取 PEM 失败", e);
-        } finally {
-            if (pemReader != null) {
-                try {
-                    pemReader.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
-        }
-        return pemObject.getContent();
+        return PemUtil.writePemString("PUBLIC KEY", data);
     }
 }

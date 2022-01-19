@@ -25,37 +25,33 @@
 
 package io.github.zornx5.helper.util;
 
-import io.github.zornx5.helper.constant.IHelperConstant;
 import io.github.zornx5.helper.exception.UtilException;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Base64Util.class})
 public class Base64UtilTest {
 
     @Test
     public void encodeAndDecode() {
         String string = Base64Util.encode2String("abc".getBytes(StandardCharsets.UTF_8));
-        Assert.assertNotNull(string);
+        Assertions.assertNotNull(string);
         byte[] bytes = Base64Util.decode2byte(string);
-        Assert.assertNotNull(bytes);
+        Assertions.assertNotNull(bytes);
     }
 
-    @Test(expected = UtilException.class)
+    @Test
     public void encodeError() {
-        Base64Util.encode2String("abc".getBytes(StandardCharsets.UTF_8),"UnsupportedEncoding");
+        Throwable exception = Assertions.assertThrows(UtilException.class, () -> {
+            Base64Util.encode2String("abc".getBytes(StandardCharsets.UTF_8), "UnsupportedEncoding");
+        });
     }
 
-    @Test(expected = UtilException.class)
+    @Test
     public void decodeError() {
-        Base64Util.decode2byte("abc","UnsupportedEncoding");
+        Throwable exception = Assertions.assertThrows(UtilException.class, () -> {
+            Base64Util.decode2byte("abc", "UnsupportedEncoding");
+        });
     }
 }

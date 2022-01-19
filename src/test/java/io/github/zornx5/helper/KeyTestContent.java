@@ -1,6 +1,6 @@
 package io.github.zornx5.helper;
 
-public interface KeyContent {
+public interface KeyTestContent {
     String base64RsaPrivateKey = "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAA" +
             "oIBAQDF7Noq4fwFagbzj7hWMz7PxIo7Lkv0ustUU5DdG+7N9Q+79TI94C7zsIBlsXQ" +
             "lGEQXFNPSW5jOyVuZmI+xlzd+RTZdvPdsBK9eTR5MvV81jlps8C154rWKvfZJsXJi2" +
@@ -71,8 +71,13 @@ public interface KeyContent {
             "sQIDAQAB\n" +
             "-----END PUBLIC KEY-----\n";
 
-    String base64EcPrivateKey = "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgP7IrMHQXdi1F3ja5snyy8DyuK8NGLdKJzaFj9o4GCXigCgYIKoZIzj0DAQehRANCAARlf8VnVpDSXLxgqUtPe8dnCGet999ivh2cgUpDJUAafcPdMTmAN/wInLVnbBaPyRHRK2ioH7KVghPKMz+fenVW";
-    String base64EcPublicKey = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZX/FZ1aQ0ly8YKlLT3vHZwhnrfffYr4dnIFKQyVAGn3D3TE5gDf8CJy1Z2wWj8kR0StoqB+ylYITyjM/n3p1Vg==";
+    String base64EcPrivateKey = "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQ" +
+            "QgP7IrMHQXdi1F3ja5snyy8DyuK8NGLdKJzaFj9o4GCXigCgYIKoZIzj0DAQehRANC" +
+            "AARlf8VnVpDSXLxgqUtPe8dnCGet999ivh2cgUpDJUAafcPdMTmAN/wInLVnbBaPyR" +
+            "HRK2ioH7KVghPKMz+fenVW";
+    String base64EcPublicKey = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEZX/FZ1aQ0ly" +
+            "8YKlLT3vHZwhnrfffYr4dnIFKQyVAGn3D3TE5gDf8CJy1Z2wWj8kR0StoqB+ylYITy" +
+            "jM/n3p1Vg==";
 
     String pemEcPrivateKey = "";
     String pemEcPublicKey = "";

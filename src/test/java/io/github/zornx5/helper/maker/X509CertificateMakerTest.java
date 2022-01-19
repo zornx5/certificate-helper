@@ -32,8 +32,8 @@ import io.github.zornx5.helper.util.CertificateUtil;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.X500NameBuilder;
 import org.bouncycastle.asn1.x500.style.BCStyle;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.security.KeyPair;
 import java.security.cert.X509Certificate;
@@ -43,29 +43,31 @@ public class X509CertificateMakerTest {
     public static X500Name buildSubjectDN() {
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
         builder.addRDN(BCStyle.C, "CN");
-        builder.addRDN(BCStyle.O, "org.zz");
-        builder.addRDN(BCStyle.OU, "org.zz");
-        builder.addRDN(BCStyle.CN, "example.org");
-        builder.addRDN(BCStyle.EmailAddress, "abc@example.org");
+        builder.addRDN(BCStyle.O, "organizational");
+        builder.addRDN(BCStyle.OU, "organizational unit");
+        builder.addRDN(BCStyle.CN, "zornx5.github.io");
+        builder.addRDN(BCStyle.EmailAddress, "zornx5@gmail.com");
         return builder.build();
     }
 
     public static X500Name buildRootCADN() {
         X500NameBuilder builder = new X500NameBuilder(BCStyle.INSTANCE);
         builder.addRDN(BCStyle.C, "CN");
-        builder.addRDN(BCStyle.O, "org.zz");
-        builder.addRDN(BCStyle.OU, "org.zz");
-        builder.addRDN(BCStyle.CN, "ZZ Root CA");
+        builder.addRDN(BCStyle.O, "root organizational");
+        builder.addRDN(BCStyle.OU, "root organizational unit");
+        builder.addRDN(BCStyle.CN, "zornx5.github.io");
+        builder.addRDN(BCStyle.EmailAddress, "zornx5@gmail.com");
         return builder.build();
     }
 
     public static X509CertificateMaker buildCertMaker() {
-        X500Name issuerName = buildRootCADN();
-        KeyPair issKP = KeyHelperManager.getByName("sm2").generateKeyPair();
-        long certExpire = 20L * 365 * 24 * 60 * 60 * 1000; // 20年
+        X500Name issuerX500Name = buildRootCADN();
+        KeyPair issuerKeyPair = KeyHelperManager.getByName("sm2").generateKeyPair();
+        // 20年
+        long certificateExpire = 20L * 365 * 24 * 60 * 60 * 1000;
         // 实际应用中可能需要使用数据库来保证证书序列号的唯一性。
         CertificateSerialNumberAllocator snAllocator = new RandomCertificateSerialNumberAllocatorImpl();
-        return new X509CertificateMaker(issKP, certExpire, issuerName, snAllocator);
+        return new X509CertificateMaker(issuerKeyPair, certificateExpire, issuerX500Name, snAllocator);
     }
 
     @Test
@@ -78,10 +80,10 @@ public class X509CertificateMakerTest {
 
             X509CertificateMaker certMaker = buildCertMaker();
             X509Certificate cert = certMaker.makeSSLEndEntityCert(csr);
-            Assert.assertNotNull(cert);
+            Assertions.assertNotNull(cert);
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
     }
 }

@@ -31,8 +31,8 @@ import io.github.zornx5.helper.util.KeyUtil;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.jcajce.provider.asymmetric.ec.BCECPrivateKey;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -49,7 +49,7 @@ import java.security.cert.X509Certificate;
 
 public class Pkcs12MakerTest {
     private static final char[] TEST_P12_PASSWD = "12345678".toCharArray();
-    private static final String TEST_P12_FILENAME = "target/test.p12";
+    private static final String TEST_P12_FILENAME = "/tmp/test.p12";
 
     static {
         Security.addProvider(new BouncyCastleProvider());
@@ -94,11 +94,11 @@ public class Pkcs12MakerTest {
             verify.initVerify(cert1);
             verify.update(srcData);
             boolean sigValid = verify.verify(signatureValue);
-            Assert.assertTrue("signature validation result", sigValid);
+            Assertions.assertTrue(sigValid);
 
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail();
+            Assertions.fail();
         }
     }
 }

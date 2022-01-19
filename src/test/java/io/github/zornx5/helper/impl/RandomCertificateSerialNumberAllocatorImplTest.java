@@ -26,13 +26,17 @@
 package io.github.zornx5.helper.impl;
 
 import io.github.zornx5.helper.CertificateSerialNumberAllocator;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class RandomCertificateSerialNumberAllocatorImplTest {
 
     @Test
+    @DisplayName("获取下一个序列号测试")
     public void nextSerialNumber() {
         CertificateSerialNumberAllocator allocator = new RandomCertificateSerialNumberAllocatorImpl();
-        System.out.println(allocator.nextSerialNumber().toString());
+        Assertions.assertNotNull(allocator);
+        Assertions.assertNotNull(allocator.nextSerialNumber().toString());
     }
 }

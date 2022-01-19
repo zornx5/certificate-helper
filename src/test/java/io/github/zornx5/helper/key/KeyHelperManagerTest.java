@@ -26,26 +26,26 @@
 package io.github.zornx5.helper.key;
 
 import io.github.zornx5.helper.GlobalBouncyCastleProvider;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 public class KeyHelperManagerTest {
 
-    @BeforeClass
-    public static void beforeClass() {
+    @BeforeAll
+    public static void init() {
         GlobalBouncyCastleProvider.setUseBouncyCastle(true);
     }
 
     @Test
     public void getByName() {
         IKeyHelper rsaKeyHelper = KeyHelperManager.getByName("RSA");
-        Assert.assertNotNull(rsaKeyHelper);
+        Assertions.assertNotNull(rsaKeyHelper);
         IKeyHelper sm2KeyHelper = KeyHelperManager.getByName("SM2");
-        Assert.assertNotNull(sm2KeyHelper);
+        Assertions.assertNotNull(sm2KeyHelper);
 
         IKeyHelper ecKeyHelper = KeyHelperManager.getByName("EC");
-        Assert.assertNotNull(ecKeyHelper);
+        Assertions.assertNotNull(ecKeyHelper);
 
         IKeyHelper unknownKeyHelper = null;
         try {
@@ -53,6 +53,6 @@ public class KeyHelperManagerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Assert.assertNull(unknownKeyHelper);
+        Assertions.assertNull(unknownKeyHelper);
     }
 }

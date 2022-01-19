@@ -25,32 +25,32 @@
 
 package io.github.zornx5.helper.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class StringUtilTest {
 
     @Test
     public void isBlank() {
-        Assert.assertTrue(StringUtil.isBlank(""));
-        Assert.assertTrue(StringUtil.isBlank("  "));
-        Assert.assertTrue(StringUtil.isBlank("  \n"));
-        Assert.assertTrue(StringUtil.isBlank("  \t"));
-        Assert.assertTrue(StringUtil.isBlank("  \n\r"));
-        Assert.assertFalse(StringUtil.isBlank("q"));
-        Assert.assertFalse(StringUtil.isBlank(" q "));
-        Assert.assertFalse(StringUtil.isBlank(" q \n"));
+        Assertions.assertTrue(StringUtil.isBlank(""));
+        Assertions.assertTrue(StringUtil.isBlank("  "));
+        Assertions.assertTrue(StringUtil.isBlank("  \n"));
+        Assertions.assertTrue(StringUtil.isBlank("  \t"));
+        Assertions.assertTrue(StringUtil.isBlank("  \n\r"));
+        Assertions.assertFalse(StringUtil.isBlank("q"));
+        Assertions.assertFalse(StringUtil.isBlank(" q "));
+        Assertions.assertFalse(StringUtil.isBlank(" q \n"));
     }
 
     @Test
     public void isNotBlank(){
-        Assert.assertFalse(StringUtil.isNotBlank(""));
-        Assert.assertFalse(StringUtil.isNotBlank("  "));
-        Assert.assertFalse(StringUtil.isNotBlank("  \n"));
-        Assert.assertFalse(StringUtil.isNotBlank("  \t"));
-        Assert.assertFalse(StringUtil.isNotBlank("  \n\r"));
-        Assert.assertTrue(StringUtil.isNotBlank("q"));
-        Assert.assertTrue(StringUtil.isNotBlank(" q "));
-        Assert.assertTrue(StringUtil.isNotBlank(" q \n"));
+        Assertions.assertFalse(StringUtil.isNotBlank(""));
+        Assertions.assertFalse(StringUtil.isNotBlank("  "));
+        Assertions.assertFalse(StringUtil.isNotBlank("  \n"));
+        Assertions.assertFalse(StringUtil.isNotBlank("  \t"));
+        Assertions.assertFalse(StringUtil.isNotBlank("  \n\r"));
+        Assertions.assertTrue(StringUtil.isNotBlank("q"));
+        Assertions.assertTrue(StringUtil.isNotBlank(" q "));
+        Assertions.assertTrue(StringUtil.isNotBlank(" q \n"));
     }
 }
