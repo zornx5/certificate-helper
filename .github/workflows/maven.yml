@@ -31,5 +31,5 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: true
-        file: ./target/site/cobertura/coverage.xml
+        file: ./target/site/jacoco/jacoco.xml
         flags: unittests
