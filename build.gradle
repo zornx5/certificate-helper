@@ -53,7 +53,7 @@ javadoc {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        release(MavenPublication) {
             artifactId = 'certificate-helper'
             from components.java
             pom {
@@ -98,5 +98,5 @@ publishing {
 }
 
 signing {
-    sign(publishing.publications.mavenJava)
+    sign(publishing.publications.release)
 }
