@@ -39,15 +39,15 @@ public class KeyHelperManagerTest {
 
     @Test
     public void getByName() {
-        IKeyHelper rsaKeyHelper = KeyHelperManager.getByName("RSA");
+        KeyHelper rsaKeyHelper = KeyHelperManager.getByName("RSA");
         Assertions.assertNotNull(rsaKeyHelper);
-        IKeyHelper sm2KeyHelper = KeyHelperManager.getByName("SM2");
+        KeyHelper sm2KeyHelper = KeyHelperManager.getByName("SM2");
         Assertions.assertNotNull(sm2KeyHelper);
 
-        IKeyHelper ecKeyHelper = KeyHelperManager.getByName("EC");
+        KeyHelper ecKeyHelper = KeyHelperManager.getByName("EC");
         Assertions.assertNotNull(ecKeyHelper);
 
-        IKeyHelper unknownKeyHelper = null;
+        KeyHelper unknownKeyHelper = null;
         try {
             unknownKeyHelper = KeyHelperManager.getByName("unknown");
         } catch (Exception e) {

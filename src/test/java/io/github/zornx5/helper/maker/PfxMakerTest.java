@@ -25,7 +25,7 @@
 
 package io.github.zornx5.helper.maker;
 
-import io.github.zornx5.helper.key.IKeyHelper;
+import io.github.zornx5.helper.key.KeyHelper;
 import io.github.zornx5.helper.key.KeyHelperManager;
 import io.github.zornx5.helper.util.CertificateUtil;
 import org.bouncycastle.asn1.ASN1Encoding;
@@ -53,7 +53,7 @@ public class PfxMakerTest {
     @Test
     public void testMakePfx() {
         try {
-            IKeyHelper helper = KeyHelperManager.getByName("Sm2");
+            KeyHelper helper = KeyHelperManager.getByName("Sm2");
             KeyPair keyPair = helper.generateKeyPair();
             X500Name subDN = X509CertificateMakerTest.buildSubjectDN();
             byte[] csr = CertificateUtil.generateCertificationRequest(subDN, keyPair.getPrivate()).getEncoded();

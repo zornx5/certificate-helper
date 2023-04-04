@@ -58,10 +58,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import static io.github.zornx5.helper.constant.IHelperConstant.EC_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.RSA_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.RSA_DEFAULT_SIGN_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_SIGN_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.EC_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.RSA_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.RSA_DEFAULT_SIGN_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.SM2_DEFAULT_SIGN_ALGORITHM;
 
 /**
  * X509 证书制作

@@ -23,9 +23,8 @@
  *
  */
 
-package io.github.zornx5.helper.impl;
+package io.github.zornx5.helper;
 
-import io.github.zornx5.helper.CertificateSerialNumberAllocator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

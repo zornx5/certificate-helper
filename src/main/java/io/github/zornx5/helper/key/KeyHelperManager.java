@@ -26,9 +26,6 @@
 package io.github.zornx5.helper.key;
 
 import io.github.zornx5.helper.exception.KeyHelperException;
-import io.github.zornx5.helper.key.impl.EcKeyHelper;
-import io.github.zornx5.helper.key.impl.RsaKeyHelper;
-import io.github.zornx5.helper.key.impl.Sm2KeyHelper;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.gm.GMObjectIdentifiers;
 import org.bouncycastle.asn1.pkcs.PKCSObjectIdentifiers;
@@ -43,7 +40,7 @@ import org.bouncycastle.asn1.x9.X9ObjectIdentifiers;
  */
 public class KeyHelperManager {
 
-    public static IKeyHelper getByName(String type) {
+    public static KeyHelper getByName(String type) {
         String rsa = "RSA";
         String sm2 = "SM2";
         String ec = "EC";
@@ -68,7 +65,7 @@ public class KeyHelperManager {
      * @return 帮助类
      * @throws KeyHelperException 密钥帮助异常
      */
-    public static IKeyHelper getByAlgorithm(AlgorithmIdentifier algorithmIdentifier) throws KeyHelperException {
+    public static KeyHelper getByAlgorithm(AlgorithmIdentifier algorithmIdentifier) throws KeyHelperException {
         if (algorithmIdentifier == null) {
             throw new KeyHelperException("algorithmIdentifier 为空");
         }

@@ -36,21 +36,22 @@
 ```xml
 
 <dependency>
-    <groupId>io.github.zornx5</groupId>
-    <artifactId>certificate-helper</artifactId>
-    <version>0.0.1</version>
+  <groupId>io.github.zornx5</groupId>
+  <artifactId>certificate-helper</artifactId>
+  <version>0.2.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```gradle
-implementation 'io.github.zornx5:certificate-helper:0.0.1'
+implementation 'io.github.zornx5:certificate-helper:0.2.0'
 ```
 
 ### 编译安装
 
-访问主页：[https://github.com/zornx5/certificate-helper](https://github.com/zornx5/certificate-helper) 下载整个项目源码，然后执行:
+访问主页：[https://github.com/zornx5/certificate-helper](https://github.com/zornx5/certificate-helper)
+下载整个项目源码，然后执行:
 
 ```sh
 ./install.sh

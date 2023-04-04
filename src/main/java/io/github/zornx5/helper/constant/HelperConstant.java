@@ -30,7 +30,7 @@ package io.github.zornx5.helper.constant;
  *
  * @author zornx5
  */
-public interface IHelperConstant {
+public interface HelperConstant {
 
     String DEFAULT_CHARSET = "UTF-8";
 

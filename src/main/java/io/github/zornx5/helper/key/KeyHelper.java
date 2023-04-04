@@ -39,7 +39,7 @@ import java.security.PublicKey;
  *
  * @author zornx5
  */
-public interface IKeyHelper {
+public interface KeyHelper {
 
     /**
      * 生成密钥对 <br>

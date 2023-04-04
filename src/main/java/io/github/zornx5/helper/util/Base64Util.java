@@ -25,7 +25,7 @@
 
 package io.github.zornx5.helper.util;
 
-import io.github.zornx5.helper.constant.IHelperConstant;
+import io.github.zornx5.helper.constant.HelperConstant;
 import io.github.zornx5.helper.exception.UtilException;
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,7 +45,7 @@ public class Base64Util {
 
     public static String encode2String(byte[] data, String charset) {
         if (StringUtil.isBlank(charset)) {
-            charset = IHelperConstant.DEFAULT_CHARSET;
+            charset = HelperConstant.DEFAULT_CHARSET;
         }
         try {
             return new String(Base64.getEncoder().encode(data), charset);
@@ -61,7 +61,7 @@ public class Base64Util {
 
     public static byte[] decode2byte(String base64String, String charset) {
         if (StringUtil.isBlank(charset)) {
-            charset = IHelperConstant.DEFAULT_CHARSET;
+            charset = HelperConstant.DEFAULT_CHARSET;
         }
         try {
             return Base64.getDecoder().decode(base64String.getBytes(charset));

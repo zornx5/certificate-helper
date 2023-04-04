@@ -23,12 +23,11 @@
  *
  */
 
-package io.github.zornx5.helper.key.impl;
+package io.github.zornx5.helper.key;
 
 import io.github.zornx5.helper.GlobalBouncyCastleProvider;
-import io.github.zornx5.helper.constant.IHelperConstant;
+import io.github.zornx5.helper.constant.HelperConstant;
 import io.github.zornx5.helper.exception.KeyHelperException;
-import io.github.zornx5.helper.key.IKeyHelper;
 import io.github.zornx5.helper.util.Base64Util;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
@@ -62,7 +61,7 @@ public class RsaKeyHelperTest {
 
     private static PrivateKey sm2PrivateKey;
     private static PublicKey sm2PublicKey;
-    private final IKeyHelper helper = new RsaKeyHelper();
+    private final KeyHelper helper = new RsaKeyHelper();
 
     @BeforeAll
     public static void init() {
@@ -86,17 +85,17 @@ public class RsaKeyHelperTest {
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
 
-        Assertions.assertEquals(IHelperConstant.RSA_ALGORITHM, privateKey.getAlgorithm());
-        Assertions.assertEquals(IHelperConstant.RSA_ALGORITHM, publicKey.getAlgorithm());
+        Assertions.assertEquals(HelperConstant.RSA_ALGORITHM, privateKey.getAlgorithm());
+        Assertions.assertEquals(HelperConstant.RSA_ALGORITHM, publicKey.getAlgorithm());
         Assertions.assertEquals("PKCS#8", privateKey.getFormat());
-        Assertions.assertEquals(IHelperConstant.X509_CERTIFICATE_TYPE, publicKey.getFormat());
+        Assertions.assertEquals(HelperConstant.X509_CERTIFICATE_TYPE, publicKey.getFormat());
         Assertions.assertTrue(privateKey instanceof RSAPrivateKey);
         Assertions.assertTrue(publicKey instanceof RSAPublicKey);
         Assertions.assertTrue(privateKey instanceof BCRSAPrivateKey);
         Assertions.assertTrue(publicKey instanceof BCRSAPublicKey);
 
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(HelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
@@ -105,7 +104,7 @@ public class RsaKeyHelperTest {
         Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(HelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
@@ -114,7 +113,7 @@ public class RsaKeyHelperTest {
         Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(HelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
@@ -123,7 +122,7 @@ public class RsaKeyHelperTest {
         Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(HelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test
@@ -132,7 +131,7 @@ public class RsaKeyHelperTest {
         Assertions.assertNotNull(keyPair);
         PrivateKey privateKey = keyPair.getPrivate();
         int keySize = ((BCRSAPrivateKey) privateKey).getModulus().toString(2).length();
-        Assertions.assertEquals(IHelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
+        Assertions.assertEquals(HelperConstant.RSA_DEFAULT_KEY_SIZE, keySize);
     }
 
     @Test

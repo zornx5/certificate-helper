@@ -23,10 +23,10 @@
  *
  */
 
-package io.github.zornx5.helper.key.impl;
+package io.github.zornx5.helper.key;
 
 import io.github.zornx5.helper.GlobalBouncyCastleProvider;
-import io.github.zornx5.helper.constant.IHelperConstant;
+import io.github.zornx5.helper.constant.HelperConstant;
 import io.github.zornx5.helper.exception.KeyHelperException;
 import io.github.zornx5.helper.util.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -72,7 +72,7 @@ public class ECKeyHelperTest {
 
     @AfterEach
     public void setUp() {
-        helper.setEcCurve(IHelperConstant.EC_DEFAULT_CURVE);
+        helper.setEcCurve(HelperConstant.EC_DEFAULT_CURVE);
         log.debug("EC 曲线：{}", helper.getEcCurve());
     }
 

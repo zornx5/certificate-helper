@@ -26,7 +26,7 @@
 package io.github.zornx5.helper.util;
 
 import io.github.zornx5.helper.anntation.Beta;
-import io.github.zornx5.helper.constant.IHelperConstant;
+import io.github.zornx5.helper.constant.HelperConstant;
 import io.github.zornx5.helper.exception.UtilException;
 import io.github.zornx5.helper.key.KeyHelperManager;
 import org.bouncycastle.util.io.pem.PemObject;
@@ -127,7 +127,7 @@ public class PemUtil {
     @Beta
     public static PrivateKey readSm2PemPrivateKey(InputStream keyStream) {
         try {
-            return KeyHelperManager.getByName(IHelperConstant.SM2_ALGORITHM).convertPrivateKeyPkcs1ToPkcs8(readPem(keyStream));
+            return KeyHelperManager.getByName(HelperConstant.SM2_ALGORITHM).convertPrivateKeyPkcs1ToPkcs8(readPem(keyStream));
         } finally {
             IoUtil.close(keyStream);
         }
@@ -157,17 +157,17 @@ public class PemUtil {
         if (StringUtil.isNotBlank(type)) {
             // private
             if (type.endsWith(EC_PRIVATE_KEY)) {
-                return KeyHelperManager.getByName(IHelperConstant.EC_ALGORITHM).convertToPrivateKey(object.getContent());
+                return KeyHelperManager.getByName(HelperConstant.EC_ALGORITHM).convertToPrivateKey(object.getContent());
             }
             if (type.endsWith(PRIVATE_KEY)) {
-                return KeyHelperManager.getByName(IHelperConstant.RSA_ALGORITHM).convertToPrivateKey(object.getContent());
+                return KeyHelperManager.getByName(HelperConstant.RSA_ALGORITHM).convertToPrivateKey(object.getContent());
             }
 
             // public
             if (type.endsWith(EC_PUBLIC_KEY)) {
-                return KeyHelperManager.getByName(IHelperConstant.EC_ALGORITHM).convertToPublicKey(object.getContent());
+                return KeyHelperManager.getByName(HelperConstant.EC_ALGORITHM).convertToPublicKey(object.getContent());
             } else if (type.endsWith(PUBLIC_KEY)) {
-                return KeyHelperManager.getByName(IHelperConstant.RSA_ALGORITHM).convertToPublicKey(object.getContent());
+                return KeyHelperManager.getByName(HelperConstant.RSA_ALGORITHM).convertToPublicKey(object.getContent());
             } else if (type.endsWith(CERTIFICATE)) {
                 // TODO 从证书获取公钥
             }
@@ -199,7 +199,7 @@ public class PemUtil {
      */
     public static PemObject readPemObject(InputStream keyStream) {
         try {
-            return readPemObject(new InputStreamReader(keyStream, IHelperConstant.DEFAULT_CHARSET));
+            return readPemObject(new InputStreamReader(keyStream, HelperConstant.DEFAULT_CHARSET));
         } catch (UnsupportedEncodingException e) {
             throw new UtilException(e);
         }

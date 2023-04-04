@@ -26,10 +26,10 @@
 package io.github.zornx5.helper.util;
 
 import io.github.zornx5.helper.GlobalBouncyCastleProvider;
-import io.github.zornx5.helper.constant.IHelperConstant;
+import io.github.zornx5.helper.constant.HelperConstant;
 import io.github.zornx5.helper.exception.KeyHelperException;
 import io.github.zornx5.helper.exception.UtilException;
-import io.github.zornx5.helper.key.IKeyHelper;
+import io.github.zornx5.helper.key.KeyHelper;
 import io.github.zornx5.helper.key.KeyHelperManager;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.ASN1EncodableVector;
@@ -117,7 +117,7 @@ public class CertificateUtil {
      */
     public static CertificateFactory getCertificateFactory(String certificateType) throws UtilException {
         if (StringUtil.isBlank(certificateType)) {
-            certificateType = IHelperConstant.X509_CERTIFICATE_TYPE;
+            certificateType = HelperConstant.X509_CERTIFICATE_TYPE;
         }
 
         CertificateFactory certificateFactory;
@@ -148,7 +148,7 @@ public class CertificateUtil {
      */
     public static KeyStore getKeyStore(String certificateType) throws UtilException {
         if (StringUtil.isBlank(certificateType)) {
-            certificateType = IHelperConstant.PKCS12_CERTIFICATE_TYPE;
+            certificateType = HelperConstant.PKCS12_CERTIFICATE_TYPE;
         }
 
         KeyStore keyStore;
@@ -192,7 +192,7 @@ public class CertificateUtil {
     public static Certificate assembleCertificate(TBSCertificate tbsCertificate, PrivateKey issuerPrivateKey) throws UtilException {
         PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
-        IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
+        KeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
 
         byte[] signData;
         try {
@@ -220,7 +220,7 @@ public class CertificateUtil {
     public static PKCS10CertificationRequest generateCertificationRequest(X500Name subject, PrivateKey issuerPrivateKey) throws UtilException {
         PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
-        IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
+        KeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
         PublicKey publicKey = helper.convertToPublicKey(issuerPrivateKey);
 
         SubjectPublicKeyInfo subjectPublicKeyInfo = SubjectPublicKeyInfo.getInstance(publicKey.getEncoded());
@@ -245,7 +245,7 @@ public class CertificateUtil {
     public static boolean checkCertificationRequest(PKCS10CertificationRequest csr, PrivateKey issuerPrivateKey) {
         PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
-        IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
+        KeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
 
         byte[] signature = csr.getSignature();
         try {
@@ -369,7 +369,7 @@ public class CertificateUtil {
     public static boolean checkCertificate(Certificate certificate, PrivateKey issuerPrivateKey) {
         PrivateKeyInfo privateKeyInfo = KeyUtil.convertPrivateKeyToPrivateKeyInfo(issuerPrivateKey);
         AlgorithmIdentifier algorithmIdentifier = privateKeyInfo.getPrivateKeyAlgorithm();
-        IKeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
+        KeyHelper helper = KeyHelperManager.getByAlgorithm(algorithmIdentifier);
 
         byte[] signature = certificate.getSignature().getBytes();
         try {

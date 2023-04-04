@@ -23,10 +23,10 @@
  *
  */
 
-package io.github.zornx5.helper.key.impl;
+package io.github.zornx5.helper.key;
 
 import io.github.zornx5.helper.GlobalBouncyCastleProvider;
-import io.github.zornx5.helper.constant.IHelperConstant;
+import io.github.zornx5.helper.constant.HelperConstant;
 import io.github.zornx5.helper.exception.KeyHelperException;
 import io.github.zornx5.helper.util.Base64Util;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +75,7 @@ public class Sm2KeyHelperTest {
 
     @AfterEach
     public void setUp() {
-        helper.setEcCurve(IHelperConstant.SM2_EC_CURVE);
+        helper.setEcCurve(HelperConstant.SM2_EC_CURVE);
     }
 
     @Test
@@ -91,10 +91,10 @@ public class Sm2KeyHelperTest {
         PrivateKey privateKey = keyPair.getPrivate();
         PublicKey publicKey = keyPair.getPublic();
 
-        Assertions.assertEquals(IHelperConstant.EC_ALGORITHM, privateKey.getAlgorithm());
-        Assertions.assertEquals(IHelperConstant.EC_ALGORITHM, publicKey.getAlgorithm());
+        Assertions.assertEquals(HelperConstant.EC_ALGORITHM, privateKey.getAlgorithm());
+        Assertions.assertEquals(HelperConstant.EC_ALGORITHM, publicKey.getAlgorithm());
         Assertions.assertEquals("PKCS#8", privateKey.getFormat());
-        Assertions.assertEquals(IHelperConstant.X509_CERTIFICATE_TYPE, publicKey.getFormat());
+        Assertions.assertEquals(HelperConstant.X509_CERTIFICATE_TYPE, publicKey.getFormat());
         Assertions.assertTrue(privateKey instanceof ECPrivateKey);
         Assertions.assertTrue(publicKey instanceof ECPublicKey);
         Assertions.assertTrue(privateKey instanceof BCECPrivateKey);

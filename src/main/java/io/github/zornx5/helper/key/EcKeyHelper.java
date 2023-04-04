@@ -23,10 +23,9 @@
  *
  */
 
-package io.github.zornx5.helper.key.impl;
+package io.github.zornx5.helper.key;
 
 import io.github.zornx5.helper.exception.KeyHelperException;
-import io.github.zornx5.helper.key.AbstractKeyHelper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,12 +45,12 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.ECGenParameterSpec;
 
-import static io.github.zornx5.helper.constant.IHelperConstant.EC_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.EC_DEFAULT_CIPHER_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.EC_DEFAULT_CURVE;
-import static io.github.zornx5.helper.constant.IHelperConstant.EC_DEFAULT_KEY_SIZE;
-import static io.github.zornx5.helper.constant.IHelperConstant.EC_DEFAULT_SIGN_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_KEY_SIZE;
+import static io.github.zornx5.helper.constant.HelperConstant.EC_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.EC_DEFAULT_CIPHER_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.EC_DEFAULT_CURVE;
+import static io.github.zornx5.helper.constant.HelperConstant.EC_DEFAULT_KEY_SIZE;
+import static io.github.zornx5.helper.constant.HelperConstant.EC_DEFAULT_SIGN_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.SM2_DEFAULT_KEY_SIZE;
 
 /**
  * EC 密钥帮助类

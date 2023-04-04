@@ -26,7 +26,7 @@
 package io.github.zornx5.helper.maker;
 
 import io.github.zornx5.helper.CertificateSerialNumberAllocator;
-import io.github.zornx5.helper.impl.RandomCertificateSerialNumberAllocatorImpl;
+import io.github.zornx5.helper.RandomCertificateSerialNumberAllocatorImpl;
 import io.github.zornx5.helper.key.KeyHelperManager;
 import io.github.zornx5.helper.util.CertificateUtil;
 import org.bouncycastle.asn1.x500.X500Name;

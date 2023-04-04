@@ -38,14 +38,14 @@ Add the following content to the `dependencies` of the `pom.xml` of the project:
 <dependency>
     <groupId>io.github.zornx5</groupId>
     <artifactId>certificate-helper</artifactId>
-    <version>0.0.1</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```gradle
-implementation 'io.github.zornx5:certificate-helper:0.0.1'
+implementation 'io.github.zornx5:certificate-helper:0.2.0'
 ```
 
 ### Compile and install

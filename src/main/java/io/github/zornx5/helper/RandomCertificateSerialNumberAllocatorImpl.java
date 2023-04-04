@@ -23,9 +23,7 @@
  *
  */
 
-package io.github.zornx5.helper.impl;
-
-import io.github.zornx5.helper.CertificateSerialNumberAllocator;
+package io.github.zornx5.helper;
 
 import java.math.BigInteger;
 import java.util.UUID;

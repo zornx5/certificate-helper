@@ -23,7 +23,7 @@
  *
  */
 
-package io.github.zornx5.helper.key.impl;
+package io.github.zornx5.helper.key;
 
 import io.github.zornx5.helper.exception.KeyHelperException;
 import lombok.extern.slf4j.Slf4j;
@@ -62,11 +62,11 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Objects;
 
-import static io.github.zornx5.helper.constant.IHelperConstant.EC_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_CIPHER_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_KEY_SIZE;
-import static io.github.zornx5.helper.constant.IHelperConstant.SM2_DEFAULT_SIGN_ALGORITHM;
-import static io.github.zornx5.helper.constant.IHelperConstant.SM2_EC_CURVE;
+import static io.github.zornx5.helper.constant.HelperConstant.EC_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.SM2_DEFAULT_CIPHER_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.SM2_DEFAULT_KEY_SIZE;
+import static io.github.zornx5.helper.constant.HelperConstant.SM2_DEFAULT_SIGN_ALGORITHM;
+import static io.github.zornx5.helper.constant.HelperConstant.SM2_EC_CURVE;
 
 /**
  * SM2 密钥帮助类

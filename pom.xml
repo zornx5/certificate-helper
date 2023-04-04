@@ -6,7 +6,7 @@
 
     <groupId>io.github.zornx5</groupId>
     <artifactId>certificate-helper</artifactId>
-    <version>0.0.1</version>
+    <version>0.2.0</version>
 
     <name>certificate-helper</name>
     <url>https://zornx5.github.io</url>

@@ -25,7 +25,7 @@
 
 package io.github.zornx5.helper.key;
 
-import io.github.zornx5.helper.constant.IHelperConstant;
+import io.github.zornx5.helper.constant.HelperConstant;
 import io.github.zornx5.helper.exception.CertificateHelperException;
 import io.github.zornx5.helper.exception.KeyHelperException;
 import io.github.zornx5.helper.exception.UtilException;
@@ -61,7 +61,7 @@ import java.util.Objects;
  * @author zornx5
  */
 @Slf4j
-public abstract class AbstractKeyHelper implements IKeyHelper {
+public abstract class AbstractKeyHelper implements KeyHelper {
 
     protected KeyPairGenerator keyPairGenerator;
 
@@ -285,7 +285,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public String sign(String plainText, String charset, String base64OrPemPrivateKey) throws KeyHelperException {
         if (StringUtil.isBlank(charset)) {
-            charset = IHelperConstant.DEFAULT_CHARSET;
+            charset = HelperConstant.DEFAULT_CHARSET;
         }
         if (StringUtil.isBlank(plainText) || StringUtil.isBlank(base64OrPemPrivateKey)) {
             throw new KeyHelperException("签名原文或者私钥字串数据不能为空");
@@ -335,7 +335,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public boolean verify(String plainText, String charset, String base64OrPemPublicKey, String base64Signature) throws KeyHelperException {
         if (StringUtil.isBlank(charset)) {
-            charset = IHelperConstant.DEFAULT_CHARSET;
+            charset = HelperConstant.DEFAULT_CHARSET;
         }
         if (StringUtil.isBlank(plainText) || StringUtil.isBlank(base64OrPemPublicKey) || StringUtil.isBlank(base64Signature)) {
             throw new KeyHelperException("签名原文或者公钥字串或者签名不能为空");
@@ -379,7 +379,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public String encrypt(String plainText, String charset, String base64OrPemPublicKey) throws KeyHelperException {
         if (StringUtil.isBlank(charset)) {
-            charset = IHelperConstant.DEFAULT_CHARSET;
+            charset = HelperConstant.DEFAULT_CHARSET;
         }
         if (StringUtil.isBlank(plainText) || StringUtil.isBlank(base64OrPemPublicKey)) {
             throw new KeyHelperException("加密原文或者公钥字串不能为空");
@@ -422,7 +422,7 @@ public abstract class AbstractKeyHelper implements IKeyHelper {
     @Override
     public String decrypt(String base64CipherText, String charset, String base64OrPemPrivateKey) throws KeyHelperException {
         if (StringUtil.isBlank(charset)) {
-            charset = IHelperConstant.DEFAULT_CHARSET;
+            charset = HelperConstant.DEFAULT_CHARSET;
         }
         if (StringUtil.isBlank(base64CipherText) || StringUtil.isBlank(base64OrPemPrivateKey)) {
             throw new KeyHelperException("加密数据或者私钥字串不能为空");
