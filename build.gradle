@@ -36,9 +36,9 @@ test {
 jacocoTestReport {
     dependsOn test
     reports {
-        html.enabled true
+        html.enabled false
         xml.enabled true
-        csv.enabled true
+        csv.enabled false
     }
 }
 
