@@ -43,14 +43,14 @@ public class Base64UtilTest {
 
     @Test
     public void encodeError() {
-        Throwable exception = Assertions.assertThrows(UtilException.class, () -> {
+        Assertions.assertThrows(UtilException.class, () -> {
             Base64Util.encode2String("abc".getBytes(StandardCharsets.UTF_8), "UnsupportedEncoding");
         });
     }
 
     @Test
     public void decodeError() {
-        Throwable exception = Assertions.assertThrows(UtilException.class, () -> {
+        Assertions.assertThrows(UtilException.class, () -> {
             Base64Util.decode2byte("abc", "UnsupportedEncoding");
         });
     }

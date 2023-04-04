@@ -55,12 +55,6 @@ public class KeyUtil {
     public static final Provider PROVIDER = GlobalBouncyCastleProvider.INSTANCE.getProvider();
 
     /**
-     * 防止实例化
-     */
-    private KeyUtil() {
-    }
-
-    /**
      * 获取 {@link KeyPairGenerator}
      *
      * @param algorithm 非对称加密算法

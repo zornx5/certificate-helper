@@ -33,11 +33,6 @@ import java.io.Closeable;
  * @author zornx5
  */
 public class IoUtil {
-    /**
-     * 防止实例化
-     */
-    private IoUtil() {
-    }
 
     /**
      * 关闭<br>

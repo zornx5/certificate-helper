@@ -73,6 +73,7 @@ public class ECKeyHelperTest {
     @AfterEach
     public void setUp() {
         helper.setEcCurve(IHelperConstant.EC_DEFAULT_CURVE);
+        log.debug("EC 曲线：{}", helper.getEcCurve());
     }
 
     @Test

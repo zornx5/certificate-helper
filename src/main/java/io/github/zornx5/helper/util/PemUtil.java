@@ -64,12 +64,6 @@ public class PemUtil {
     public static final String CERTIFICATE = "CERTIFICATE";
     public static final String PREFIX = "-----";
 
-    /**
-     * 防止实例化
-     */
-    private PemUtil() {
-    }
-
     public static byte[] readPemOrBase64Content(String pem) {
         if (StringUtil.isBlank(pem)) {
             return new byte[0];

@@ -101,12 +101,6 @@ public class CertificateUtil {
     public static final Provider PROVIDER = GlobalBouncyCastleProvider.INSTANCE.getProvider();
 
     /**
-     * 防止实例化
-     */
-    private CertificateUtil() {
-    }
-
-    /**
      * 获取 X.509 {@link CertificateFactory}
      *
      * @return {@link CertificateFactory}
