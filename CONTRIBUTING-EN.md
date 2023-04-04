@@ -1,5 +1,11 @@
 # Contribution Guide
 
+-------------------------------------------------------------------------------
+
+[**中文文档**](CONTRIBUTING.md)
+
+-------------------------------------------------------------------------------
+
 :tada: Thanks for taking the time to contribute! :tada:
 
 The following is a set of guidelines for contributing to this repository, which is hosted in the [Codecov Organization](https://github.com/codecov) on GitHub.
