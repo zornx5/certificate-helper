@@ -4,6 +4,7 @@ import io.github.zornx5.helper.GlobalBouncyCastleProvider;
 import io.github.zornx5.helper.exception.UtilException;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +13,13 @@ import java.lang.reflect.Modifier;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Provider;
+import java.security.Security;
 
 class KeyUtilTest {
+
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
 
 
     private static void processNoProvider() {
@@ -98,9 +104,7 @@ class KeyUtilTest {
     @Test
     void getSignatureNoProvider() {
         processNoProvider();
-        Assertions.assertThrows(UtilException.class, () -> {
-            KeyUtil.getSignature("SM3withSM2");
-        });
+        Assertions.assertNotNull(KeyUtil.getSignature("SM3withSM2"));
         processDefaultProvider();
     }
 

@@ -25,6 +25,7 @@
 
 package io.github.zornx5.helper.util;
 
+import io.github.zornx5.helper.anntation.Beta;
 import io.github.zornx5.helper.constant.IHelperConstant;
 import io.github.zornx5.helper.exception.UtilException;
 import io.github.zornx5.helper.key.KeyHelperManager;
@@ -91,7 +92,7 @@ public class PemUtil {
         if (StringUtil.isBlank(type)) {
             throw new UtilException("类型不能为空");
         }
-        if (Objects.isNull(data) || data.length <= 0) {
+        if (Objects.isNull(data) || data.length == 0) {
             throw new UtilException(type + " 数据不能为空");
         }
         PemObject pemObject = new PemObject(type, data);
@@ -123,6 +124,7 @@ public class PemUtil {
      * @param keyStream 私钥 PEM 流
      * @return {@link PrivateKey}
      */
+    @Beta
     public static PrivateKey readSm2PemPrivateKey(InputStream keyStream) {
         try {
             return KeyHelperManager.getByName(IHelperConstant.SM2_ALGORITHM).convertPrivateKeyPkcs1ToPkcs8(readPem(keyStream));
@@ -148,6 +150,7 @@ public class PemUtil {
      * @param keyStream PEM 流
      * @return {@link Key}，null 表示无法识别的密钥类型
      */
+    @Beta
     public static Key readPemKey(InputStream keyStream) {
         final PemObject object = readPemObject(keyStream);
         final String type = object.getType();

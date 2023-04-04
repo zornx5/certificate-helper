@@ -43,7 +43,7 @@ public class StringUtilTest {
     }
 
     @Test
-    public void isNotBlank(){
+    public void isNotBlank() {
         Assertions.assertFalse(StringUtil.isNotBlank(""));
         Assertions.assertFalse(StringUtil.isNotBlank("  "));
         Assertions.assertFalse(StringUtil.isNotBlank("  \n"));
