@@ -9,6 +9,7 @@
     <a target="_blank" href="https://github.com/zornx5/certificate-helper">
         <img src="https://github.com/zornx5/certificate-helper/actions/workflows/gradle.yml/badge.svg" alt="build actions"/>
     </a>
+<a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fzornx5%2Fcertificate-helper?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fzornx5%2Fcertificate-helper.svg?type=shield"/></a>
     <a href="https://www.codacy.com/gh/zornx5/certificate-helper/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=zornx5/certificate-helper&amp;utm_campaign=Badge_Grade">
         <img src="https://app.codacy.com/project/badge/Grade/88a8612afc1440c992d0c8a0f0666a07" alt="code quality"/>
     </a>
@@ -58,3 +59,6 @@ implementation 'io.github.zornx5:certificate-helper:0.2.0'
 ```
 
 然后就可以使用 `Maven` 引入了。
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fzornx5%2Fcertificate-helper.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fzornx5%2Fcertificate-helper?ref=badge_large)
