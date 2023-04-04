@@ -19,7 +19,7 @@
 
 -------------------------------------------------------------------------------
 
-[**中文说明**](README.md)
+[**中文文档**](README.md)
 
 -------------------------------------------------------------------------------
 
@@ -48,13 +48,12 @@ Add the following content to the `dependencies` of the `pom.xml` of the project:
 implementation 'io.github.zornx5:certificate-helper:0.2.0'
 ```
 
-### Compile and install
+## Contributing
 
-Visit homepage：[https://github.com/zornx5/certificate-helper](https://github.com/zornx5/certificate-helper) Download the
-source code of the entire project, and then execute:
+Contributions are welcome! Check out the [Contribution Guide](CONTRIBUTING-EN.md).
 
-```sh
-./install.sh
-```
+## License
 
-then you can use `Maven` to import.
+The code in this project is released under the [MIT License](LICENSE).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fzornx5%2Fcertificate-helper.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fzornx5%2Fcertificate-helper?ref=badge_large)

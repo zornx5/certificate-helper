@@ -48,13 +48,12 @@
 implementation 'io.github.zornx5:certificate-helper:0.2.0'
 ```
 
-### 编译安装
+## 贡献
 
-访问主页：[https://github.com/zornx5/certificate-helper](https://github.com/zornx5/certificate-helper)
-下载整个项目源码，然后执行:
+欢迎贡献! 请查阅 [贡献指南](CONTRIBUTING.md).
 
-```sh
-./install.sh
-```
+## 许可
 
-然后就可以使用 `Maven` 引入了。
+本项目代码发布于 [MIT License](LICENSE).
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fzornx5%2Fcertificate-helper.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fzornx5%2Fcertificate-helper?ref=badge_large)
