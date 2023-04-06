@@ -8,6 +8,8 @@ plugins {
 group 'io.github.zornx5'
 version '0.2.0'
 
+//username = findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -49,13 +51,24 @@ java {
 
 javadoc {
     options.addStringOption("charset", "UTF-8")
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }
 
 publishing {
     publications {
-        release(MavenPublication) {
+        mavenJava(MavenPublication) {
             artifactId = 'certificate-helper'
             from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
             pom {
                 name = 'certificate-helper'
                 description = 'a key or certificate helper'
@@ -90,13 +103,15 @@ publishing {
                 url = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
             }
             credentials {
-                username = findProperty("ossrhUsername") ?: System.getenv("OSSRH_USERNAME")
-                password = findProperty("ossrhPassword") ?: System.getenv("OSSRH_PASSWORD")
+                username = findProperty("ossrhUsername") ?:
+                        (System.getProperty('ossrhUsername') ?: System.getenv("OSSRH_USERNAME"))
+                password = findProperty("ossrhPassword") ?:
+                        (System.getProperty('ossrhPassword') ?: System.getenv("OSSRH_PASSWORD"))
             }
         }
     }
 }
 
 signing {
-    sign(publishing.publications.release)
+    sign publishing.publications.mavenJava
 }
